@@ -2,9 +2,7 @@
 spring:
   profiles: pro
   datasource:
-      url: jdbc:mysql://rm-2zewe8hvt8mc677z1wo.mysql.rds.aliyuncs.com:3306/half_classroom?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8&rewriteBatchedStatements=true&zeroDateTimeBehavior=round&allowMultiQueries=true&useSSL=false
-      username: root
-      password: Bbqwe123!@#
+   
       filters: stat,wall,log4j
     #最大连接数
       maxActive: 1500

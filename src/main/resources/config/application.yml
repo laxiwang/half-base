@@ -1,0 +1,52 @@
+distribution:
+  session-open: ture #是否开启session超时验证（受影响的类SessionTimeoutInterceptor） (true/false)
+  spring-session-open: false #是否开启spring session,如果是多机环境需要开启(true/false)
+  kaptcha-open: false #是否开启登录时验证码 (true/false)
+  session-invalidate-time: 1800 #session失效时间(只在单机环境下生效，多机环境在SpringSessionConfig类中配置) 单位：秒
+  session-validation-interval: 900 #多久检测一次失效的session(只在单机环境下生效) 单位：秒
+
+server:
+  port: 8002
+  tomcat:
+    max-http-header-size: 8192
+
+spring:
+  session:
+    store-type: none
+  profiles:
+    active: dev
+  mvc:
+    static-path-pattern: /static/**
+    view:
+      prefix: /WEB-INF/view
+  http:
+    converters:
+      preferred-json-mapper: fastjson
+    multipart:
+      max-request-size: 100MB #最大请求大小
+      max-file-size: 100MB #最大文件大小
+  aop:
+    proxy-target-class: false 
+    
+   
+
+beetl:
+  delimiter-statement-start: \@   #开始结束标签(yaml不允许@开头)
+  delimiter-statement-end: null
+  resource-tagroot: common/tags   #自定义标签文件Root目录和后缀
+  resource-tagsuffix: tag
+  resource-auto-check: false #是否检测文件变化,开发用true合适，但线上要改为false
+
+mybatis-plus:
+  mapper-locations: classpath*:com/halfroom/distribution/dao/mapper/*.xml
+  typeAliasesPackage: com.halfroom.distribution.persistence.model，com/halfroom/distribution/dao/model
+  global-config:
+    id-type: 0  #0:数据库ID自增   1:用户输入id  2:全局唯一id(IdWorker)  3:全局唯一ID(uuid)
+    db-column-underline: false
+    refresh-mapper: true
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: true #配置的缓存的全局开关
+    lazyLoadingEnabled: true #延时加载的开关
+    multipleResultSetsEnabled: true #开启的话，延时加载一个属性时会加载该对象全部属性，否则按需加载属性
+    #log-impl: org.apache.ibatis.logging.stdout.StdOutImpl #打印sql语句,调试用

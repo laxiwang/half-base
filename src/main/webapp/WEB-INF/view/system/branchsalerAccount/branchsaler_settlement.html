@@ -1,0 +1,54 @@
+@layout("/common/_container.html"){
+<div class="row">
+	<div class="col-sm-12">
+		<div class="ibox float-e-margins">
+			<div class="ibox-title">
+				<h5>分润结算</h5>
+			</div>
+			<div class="ibox-content">
+				<div class="row">
+					<div class="row">
+						<div class="col-lg-3 col-sm-3" >
+							<div style="font-size: 16px;margin-left: 13px;margin-bottom: 10px;">
+							公众号 <input  class="paysource" type="checkbox" value="0" checked="checked" />
+							ios <input  class="paysource" type="checkbox" value="1" checked="checked" />
+							android <input  class="paysource" type="checkbox" value="2" checked="checked" />
+							</div>
+						</div>
+						<div class="col-lg-3 col-sm-3">
+
+						</div>
+						<div class="col-lg-3 col-sm-3">
+
+						</div>
+						<div class="col-lg-3 col-sm-3">
+							<#button name="搜索" icon="fa-search" clickFun="Settlement.search()" space="true"/>
+							<#button name="重置" icon="fa-trash" clickFun="Settlement.resetSearch()" space="true"/>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-3 col-sm-3">
+							<#NameCon id="condition" name="条件" placeholder="分会名称"/>
+						</div>
+						<div class="col-lg-3 col-sm-3">
+							<#TimeCon id="beginTime" name="开始日期" isTime="false" pattern="YYYY-MM-DD"/>
+						</div>
+						<div class="col-lg-3 col-sm-3">
+							<#TimeCon id="endTime" name="结束日期" isTime="false" pattern="YYYY-MM-DD"/>
+						</div>
+					</div>
+					<div class="row row-lg move-workBtn">
+						<div class="col-lg-12 col-sm-12">
+						@if(shiro.hasPermission("/settlement/do")){
+							<#button name="开始结算"   btnCss="danger"  icon="fa-money" clickFun="Settlement.settlement_do()"/>
+						@}
+						</div>
+					</div>
+				</div>
+				<#table id="SettlementTB" style=""/>
+			</div>
+		</div>
+	</div>
+</div>
+<script src="${ctxPath}/static/modular/system/branchsalerAccount/branchsaler_settlement.js"></script>
+@}

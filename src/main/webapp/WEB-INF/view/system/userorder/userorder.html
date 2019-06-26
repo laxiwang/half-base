@@ -1,0 +1,60 @@
+@layout("/common/_container.html"){
+<div class="row">
+	<div class="col-sm-12">
+		<div class="ibox float-e-margins">
+			<div class="ibox-title">
+				<h5>订单管理</h5>
+			</div>
+			<div class="ibox-content">
+				<div class="row">
+						<div class="row">
+							<div class="col-lg-3 col-sm-3">
+								<#SelectCon id="paysource" name="支付渠道">
+									<option value="" selected="selected">全部</option>
+									<option value="0">公众号</option>
+									<option value="1">ios</option>
+									<option value="2">android</option>
+									<option value="3">实体卡</option>
+								</#SelectCon>
+							 </div>
+							<div class="col-lg-3 col-sm-3">
+								<#SelectCon id="payrole" name="支付方式">
+									<option value="" selected="selected">全部</option>
+									<option value="0">推广大使</option>
+									<option value="1">销售大使</option>
+									<option value="2">自然流量</option>
+									<option value="3">知识送礼</option>
+								</#SelectCon>
+							</div>
+							<div class="col-lg-3 col-sm-3">
+							</div>
+							<div class="col-lg-3 col-sm-3">
+								<#button name="搜索" icon="fa-search" clickFun="UserOrder.search()" space="true" />
+								<#button name="重置" icon="fa-trash" clickFun="UserOrder.resetSearch()" space="true" />
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-3 col-sm-3">
+								<#NameCon id="condition" name="条件" placeholder="姓名/单号/手机号" />
+							</div>
+							<div class="col-lg-3 col-sm-3">
+								<#TimeCon id="beginTime" name="订单开始日期" isTime="false" pattern="YYYY-MM-DD" />
+							</div>
+							<div class="col-lg-3 col-sm-3">
+								<#TimeCon id="endTime" name="订单结束日期" isTime="false" pattern="YYYY-MM-DD" />
+							</div>
+						</div>
+						<div class="row row-lg move-workBtn">
+							<div class="col-lg-12 col-sm-12">
+								@if(shiro.hasPermission("/userOrder/exportList")){
+								<#button name="导出表格" icon="fa-bar-chart" clickFun="UserOrder.exportList()"/>
+								@}
+							</div>
+						</div>
+				<#table id="UserOrder" style="" />
+			</div>
+		</div>
+	</div>
+</div>
+<script src="${ctxPath}/static/modular/system/userorder/userorder.js"></script>
+@}

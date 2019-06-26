@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.halfroom.distribution.dao.UserBranchsalerChangeDao">
+  <resultMap id="BaseResultMap" type="com.halfroom.distribution.persistence.model.UserBranchsalerChange">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="old_branchsaler_id" jdbcType="INTEGER" property="oldBranchsalerId" />
+    <result column="new_branchsaler_id" jdbcType="INTEGER" property="newBranchsalerId" />
+    <result column="admin_id" jdbcType="INTEGER" property="adminId" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, user_id, old_branchsaler_id, new_branchsaler_id, admin_id, type, createtime
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from user_branchsaler_change
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from user_branchsaler_change
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insertSelective" parameterType="com.halfroom.distribution.persistence.model.UserBranchsalerChange">
+    insert into user_branchsaler_change
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="oldBranchsalerId != null">
+        old_branchsaler_id,
+      </if>
+      <if test="newBranchsalerId != null">
+        new_branchsaler_id,
+      </if>
+      <if test="adminId != null">
+        admin_id,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="createtime != null">
+        createtime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="oldBranchsalerId != null">
+        #{oldBranchsalerId,jdbcType=INTEGER},
+      </if>
+      <if test="newBranchsalerId != null">
+        #{newBranchsalerId,jdbcType=INTEGER},
+      </if>
+      <if test="adminId != null">
+        #{adminId,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.halfroom.distribution.persistence.model.UserBranchsalerChange">
+    update user_branchsaler_change
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="oldBranchsalerId != null">
+        old_branchsaler_id = #{oldBranchsalerId,jdbcType=INTEGER},
+      </if>
+      <if test="newBranchsalerId != null">
+        new_branchsaler_id = #{newBranchsalerId,jdbcType=INTEGER},
+      </if>
+      <if test="adminId != null">
+        admin_id = #{adminId,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null">
+        createtime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectLists" resultType="map">
+  	select u.name as uName , u.phone phone,oldb.fullname oldBname,newb.fullname newBname , 
+  	case when uchange.type=0 then '付费变更' 
+  	     when uchange.type=1 then '管理员变更' end as changeType,
+  	DATE_FORMAT(uchange.createtime,'%Y-%m-%d %H:%i:%s') as changeTime,
+  	admin.account as account 
+  	from user_branchsaler_change uchange 
+  	inner join user u on u.id = uchange.user_id
+  	left  join admin_user admin on admin.id=uchange.admin_id
+  	inner join branchsaler oldb on uchange.old_branchsaler_id = oldb.id 
+  	inner join branchsaler newb on uchange.new_branchsaler_id = newb.id 
+  	where 1=1
+  		<if test="condition != null and condition != '' ">
+			and  (		u.name  like CONCAT('%',#{condition},'%')
+					or  u.phone  like CONCAT('%',#{condition},'%') 
+				)
+		</if>
+		<if test="beginTime != null and beginTime != '' ">
+			and uchange.createtime&gt;=#{beginTime}
+		</if>
+		<if test="endTime != null and endTime != '' ">
+			and uchange.createtime &lt;= #{endTime}
+		</if>
+		order by uchange.createtime desc 
+  </select>
+</mapper>

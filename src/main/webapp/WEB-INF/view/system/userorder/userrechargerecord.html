@@ -1,0 +1,49 @@
+@layout("/common/_container.html"){
+<div class="row">
+    <div class="col-sm-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>充值记录</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row">
+                    <div class="row">
+                        <div class="col-lg-3 col-sm-3">
+                            <#NameCon id="condition" name="条件" placeholder="姓名/手机号/分会" />
+                        </div>
+                        <div class="col-lg-3 col-sm-3">
+                            <#TimeCon id="beginTime" name="充值开始日期" isTime="false" pattern="YYYY-MM-DD" />
+                        </div>
+                        <div class="col-lg-3 col-sm-3">
+                            <#TimeCon id="endTime" name="充值结束日期" isTime="false" pattern="YYYY-MM-DD" />
+                        </div>
+                        <div class="col-lg-3 col-sm-3">
+                            <#button name="搜索" icon="fa-search" clickFun="UserRechargeRecord.search()" space="true" />
+                            <#button name="重置" icon="fa-trash" clickFun="UserRechargeRecord.resetSearch()" space="true" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3 col-sm-3">
+                        </div>
+                        <div class="col-lg-3 col-sm-3">
+                        </div>
+                        <div class="col-lg-3 col-sm-3">
+                        </div>
+                        <div class="col-lg-3 col-sm-3">
+                        </div>
+                    </div>
+                    <div class="row row-lg move-workBtn">
+                        <div class="col-lg-12 col-sm-12">
+                        @if(shiro.hasPermission("/UserRechargeRecord/exportList")){
+                        <#button name="导出表格" icon="fa-bar-chart" clickFun="UserRechargeRecord.exportList()"/>
+                        @}
+                        </div>
+                    </div>
+                </div>
+                <#table id="UserRechargeRecordTable" style="" />
+            </div>
+        </div>
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/system/userorder/userrechargerecord.js"></script>
+@}

@@ -1,0 +1,44 @@
+@layout("/common/_container.html"){
+<div class="row">
+    <div class="col-sm-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>菜单管理</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <#NameCon id="menuName" name="菜单名称" />
+                        </div>
+                        <div class="col-sm-3">
+                            <#NameCon id="level" name="层级" />
+                        </div>
+                        <div class="col-sm-3">
+                        </div>
+                        <div class="col-sm-3">
+                            <#button name="搜索" icon="fa-search" clickFun="Menu.search()"/>
+                            <#button name="重置" icon="fa-trash" clickFun="Menu.resetSearch()" space="true"/>
+                        </div>
+                    </div>
+                    <div class="row row-lg move-workBtn" style="margin-bottom: 40px;">
+                        <div class="col-lg-12 col-sm-12">
+                            @if(shiro.hasPermission("/menu/add")){
+                                <#button name="添加" icon="fa-plus" clickFun="Menu.openAddMenu()"/>
+                            @}
+                            @if(shiro.hasPermission("/menu/edit")){
+                                <#button name="修改" icon="fa-edit" clickFun="Menu.openChangeMenu()" space="true"/>
+                            @}
+                            @if(shiro.hasPermission("/menu/remove")){
+                                <#button name="删除" icon="fa-remove" clickFun="Menu.delMenu()" space="true"/>
+                            @}
+                        </div>
+                    </div>
+                    <#table id="menuTable" style=""/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/system/menu/menu.js"></script>
+@}

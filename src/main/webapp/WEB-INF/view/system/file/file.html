@@ -1,0 +1,53 @@
+@layout("/common/_container.html"){
+<div class="row">
+    <div class="col-sm-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title" id="path">
+                <h5>文件管理</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row ">
+                    <div class="row">
+                        <div class="col-lg-3 col-sm-3">
+                            <#NameCon id="condition" name="文件名称" />
+                        </div>
+                        <div class="col-lg-3 col-sm-3">
+                        </div>
+                        <div class="col-lg-3 col-sm-3">
+                        </div>
+                        <div class="col-lg-3 col-sm-3">
+                                <#button name="搜索" icon="fa-search" clickFun="File.search()"/>
+                                <#button name="重置" icon="fa-trash" clickFun="File.resetSearch()" space="true"/>
+                        </div>
+                    </div>
+                    <div class="row row-lg move-workBtn">
+                        <div class="col-lg-12 col-sm-12">
+                            @if(shiro.hasPermission("/file/inFolder")){
+                            <#button name="进入文件夹" icon="fa-folder-open" clickFun="File.inFolder()"/>
+                            @}
+                            @if(shiro.hasPermission("/file/outFolder")){
+                            <#button name="返回上一层" icon="fa-reply" clickFun="File.outFolder()" space="true"/>
+                            @}
+                            @if(shiro.hasPermission("/file/openAddFolder")){
+                            <#button name="新建文件夹" icon="fa-plus" clickFun="File.openAddFolder()" space="true"/>
+                            @}
+
+                            @if(shiro.hasPermission("/file/openAddFile")){
+                            <#button name="上传文件" icon="fa-plus" clickFun="File.openAddFile()" space="true"/>
+                            @}
+                            @if(shiro.hasPermission("/file/upLoadFile")){
+                            <#button  name="下载文件"  icon="fa-cloud-download" clickFun="File.upLoadFile() " space="true"/>
+                            @}
+                            @if(shiro.hasPermission("/file/delFile")){
+                            <#button  btnCss="danger" name="删除文件/文件夹"  icon="fa-remove" clickFun="File.delFile()" space="true"/>
+                            @}
+                        </div>
+                    </div>
+                    <#table id="FileTable" style=""/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/system/file/file.js"></script>
+@}

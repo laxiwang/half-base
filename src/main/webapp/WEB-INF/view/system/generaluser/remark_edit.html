@@ -1,0 +1,21 @@
+@layout("/common/_container.html"){
+<div class="ibox float-e-margins">
+
+	<div class="ibox-content">
+	<div class="form-horizontal">
+			<div class="row">
+				<div class="col-sm-6 b-r">
+					<input type="hidden" id="userId" value="${user.id}">
+					<#input  id="remark" name="备注" underline="true" value="${user.remark}" />
+				</div>
+			</div>
+
+				<div class="col-sm-10">
+					<#button btnCss="info" name="提交"  icon="fa-check" clickFun="GeneralUser.remarkUpdate()"/>
+					<#button btnCss="danger" name="取消"  icon="fa-eraser" clickFun="GeneralUser.close()"/>
+				</div>
+	</div>
+	</div>
+</div>
+<script src="${ctxPath}/static/modular/system/generaluser/generaluser.js"></script>
+@}

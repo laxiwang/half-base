@@ -1,0 +1,21 @@
+@layout("/common/_container.html"){
+<div class="ibox float-e-margins">
+
+	<div class="ibox-content">
+	<div class="form-horizontal">
+			<div class="row">
+				<div class="col-sm-6 b-r">
+					<input type="hidden" id="userId" value="${userId}">
+					<#input  id="remark" name="提成" underline="true" value="${remark}" />
+				</div>
+			</div>
+
+				<div class="col-sm-10">
+					<#button btnCss="info" name="提交"  icon="fa-check" clickFun="Saler.updateSalerInvite()"/>
+					<#button btnCss="danger" name="取消"  icon="fa-eraser" clickFun="Saler.close()"/>
+				</div>
+	</div>
+	</div>
+</div>
+<script src="${ctxPath}/static/modular/system/generaluser/saler/saler.js"></script>
+@}

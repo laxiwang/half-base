@@ -1,0 +1,35 @@
+@layout("/common/_container.html"){
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <div class="form-horizontal" id="cardProductRecordInfo">
+            <div class="row">
+                <div class="col-sm-6 b-r">
+                    <#input id="cardNoStart" name="开始编号" underline="true"/>
+
+                    <#input id="cardNoEnd" name="结束编号" underline="true"/>
+					<#select id="fee" name="价格" underline="true">
+						<option value="198">198</option>
+						<option value="298">298</option>
+						<option value="388">388</option>
+					</#select>
+					<#select id="type" name="类型" underline="true">
+						<option value="0">付费卡</option>
+						<option value="1">半月卡</option>
+					</#select>
+                    <#input id="remark" name="备注"  underline="true"/>
+                </div>
+            </div>
+
+            
+            <div class="row btn-group-m-t">
+                <div class="col-sm-10">
+                    <#button btnCss="info" name="提交" id="ensure" icon="fa-check" clickFun="CardProductRecordInfo.addSubmit()"/>
+                    <#button btnCss="danger" name="取消" id="cancel" icon="fa-eraser" clickFun="CardProductRecordInfo.close()"/>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/system/card/cardproductrecord/cardproductrecord_info.js"></script>
+@}

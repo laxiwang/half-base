@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.halfroom.distribution.dao.BranchsalerSettlementRecordDao">
+  <resultMap id="BaseResultMap" type="com.halfroom.distribution.persistence.model.BranchsalerSettlementRecord">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="branchsaler_id" jdbcType="INTEGER" property="branchsalerId" />
+    <result column="fee" jdbcType="DECIMAL" property="fee" />
+    <result column="begin_time" jdbcType="TIMESTAMP" property="beginTime" />
+    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, branchsaler_id, fee, begin_time, end_time , create_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from branchsaler_settlement_record
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <insert id="insertSelective" parameterType="com.halfroom.distribution.persistence.model.BranchsalerSettlementRecord">
+    insert into branchsaler_settlement_record
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="branchsalerId != null">
+        branchsaler_id,
+      </if>
+      <if test="fee != null">
+        fee,
+      </if>
+      <if test="beginTime != null">
+        begin_time,
+      </if>
+      <if test="endTime != null">
+        end_time,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+        <if test="paysources != null">
+            paysources,
+        </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="branchsalerId != null">
+        #{branchsalerId,jdbcType=INTEGER},
+      </if>
+      <if test="fee != null">
+        #{fee,jdbcType=DECIMAL},
+      </if>
+      <if test="beginTime != null">
+        #{beginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+        <if test="paysources != null">
+            #{paysources},
+        </if>
+    </trim>
+  </insert>
+  <select id="selectSettlementRecordList" resultType="map">
+  	select s.id as sId,b.id as bId,b.fullname as fullName,
+  	CASE     WHEN b.level=0 THEN '总会' 
+		     WHEN b.level=1 THEN '省级分会'
+		     WHEN b.level=2 THEN '市级分会'
+		     WHEN b.level=3 THEN '区县级分会' 
+		     WHEN b.level=4 THEN '小渠道'
+		ELSE '级别异常' end  as levelName,  FORMAT(s.fee,2) as fee , DATE_FORMAT(s.create_time,'%Y-%m-%d %H:%i:%s')  as createTime,
+		concat( DATE_FORMAT(s.begin_time,'%Y-%m-%d %H:%i:%s'),' 至 ',DATE_FORMAT(s.end_time,'%Y-%m-%d %H:%i:%s'))  as settlementTime,
+	CASE WHEN  s.status=0 THEN '未开票'  WHEN s.status=1 THEN '已开票' END as status,s.invoice_number as invoiceNumber,s.paysources as paysources,
+    CASE WHEN  s.pay_status=0 THEN '未结算'  WHEN s.pay_status=1 THEN '已结算' END as payStatus
+  	from branchsaler_settlement_record s 
+  	inner join branchsaler b on b.id=s.branchsaler_id
+  	where 1=1
+  		<if test="condition != null">
+		   and b.fullname    like CONCAT('%',#{condition},'%')
+		</if>
+  		<if test="branchsaler != null">
+			and s.branchsaler_id =#{branchsaler}
+		</if>
+        <if test="bsr_status != null">
+          and s.status =#{bsr_status}
+        </if>
+        <if test="pay_status != null">
+            and s.pay_status =#{pay_status}
+        </if>
+		<if test="beginTime!=null">
+			and s.create_time &gt;= #{beginTime}
+		</if>
+		<if test="endTime!=null">
+			and s.create_time &lt;= #{endTime}
+		</if>
+    order by s.create_time desc 
+  </select>
+    <select id="settlementMoney" resultType="java.math.BigDecimal">
+      select ifnull(sum(s.fee),0)  from  branchsaler_settlement_record  s
+      where 1=1
+        <if test="branchsaler != null">
+            and s.branchsaler_id =#{branchsaler}
+        </if>
+        <if test="payStatus != null">
+            and s.pay_status =#{payStatus}
+        </if>
+    </select>
+</mapper>

@@ -1,0 +1,38 @@
+@layout("/common/_container.html"){
+<div class="row">
+	<div class="col-sm-12">
+		<div class="ibox float-e-margins">
+			<div class="ibox-title">
+				<h5>邀请销售管理</h5>
+			</div>
+			<div class="ibox-content">
+				<div class="row">
+					<div class="row">
+						<div class="col-lg-3 col-sm-3">
+							<#NameCon id="condition" name="条件" placeholder="姓名/手机号"/>
+						</div>
+						<div class="col-lg-3 col-sm-3"></div>
+						<div class="col-lg-3 col-sm-3"></div>
+						<div class="col-lg-3 col-sm-3">
+							<#button name="搜索" icon="fa-search" clickFun="Invitesaler.search()" space="true"/>
+							<#button name="重置" icon="fa-trash" clickFun="Invitesaler.resetSearch()" space="true"/>
+						</div>
+					</div>
+					<div class="row row-lg move-workBtn">
+						<div class="col-lg-12 col-sm-12">
+						@if(shiro.hasPermission("/inviteSaler/add")){
+						<#button  name="邀请成为销售大使"  icon="fa-plus" clickFun="Invitesaler.openSalerInvite()" />
+						@}
+						@if(shiro.hasPermission("/inviteSaler/closeSaler")){
+						<#button btnCss="danger" name="撤销邀请" id="ensure" icon="fa-ban" clickFun="Invitesaler.closeSalerInvite()" space="true"/>
+						@}
+						</div>
+					</div>
+					<#table id="invitesaler" style=""/>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script src="${ctxPath}/static/modular/system/generaluser/saler/invitesaler.js"></script>
+@}

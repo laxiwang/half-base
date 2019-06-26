@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.halfroom.distribution.dao.CardActiveRecordDao">
+  <resultMap id="BaseResultMap" type="com.halfroom.distribution.persistence.model.CardActiveRecord">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="branchsaler_id" jdbcType="INTEGER" property="branchsalerId" />
+    <result column="card_no_start" jdbcType="INTEGER" property="cardNoStart" />
+    <result column="card_no_end" jdbcType="INTEGER" property="cardNoEnd" />
+    <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, branchsaler_id, card_no_start, card_no_end, createtime, remark
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from card_active_record
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from card_active_record
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insertSelective" parameterType="com.halfroom.distribution.persistence.model.CardActiveRecord">
+    insert into card_active_record
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="branchsalerId != null">
+        branchsaler_id,
+      </if>
+      <if test="cardNoStart != null">
+        card_no_start,
+      </if>
+      <if test="cardNoEnd != null">
+        card_no_end,
+      </if>
+      <if test="createtime != null">
+        createtime,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="branchsalerId != null">
+        #{branchsalerId,jdbcType=INTEGER},
+      </if>
+      <if test="cardNoStart != null">
+        #{cardNoStart,jdbcType=INTEGER},
+      </if>
+      <if test="cardNoEnd != null">
+        #{cardNoEnd,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.halfroom.distribution.persistence.model.CardActiveRecord">
+    update card_active_record
+    <set>
+      <if test="branchsalerId != null">
+        branchsaler_id = #{branchsalerId,jdbcType=INTEGER},
+      </if>
+      <if test="cardNoStart != null">
+        card_no_start = #{cardNoStart,jdbcType=INTEGER},
+      </if>
+      <if test="cardNoEnd != null">
+        card_no_end = #{cardNoEnd,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null">
+        createtime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="cardActiveRecordList" resultType="map">
+  		select 
+		concat(convert(c.card_no_start,char) ,' - - ',convert(c.card_no_end,char)) as cardNoRange,
+		DATE_FORMAT(c.createtime,'%Y-%m-%d %H:%i:%s') as createtime,
+		c.remark
+		from card_active_record c
+		inner join branchsaler b on c.branchsaler_id = b.id
+		where 1=1
+		and c.branchsaler_id=#{branchSaler}
+		<if test="beginTime != null">
+			and c.createtime &gt;= #{beginTime}
+		</if>
+		<if test="endTime != null">
+			and c.createtime &lt;= #{endTime}
+		</if>
+  </select>
+</mapper>

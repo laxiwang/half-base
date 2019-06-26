@@ -1,0 +1,65 @@
+@layout("/common/_container.html"){
+<style>
+</style>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>评论</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row ">
+                        <div class="row">
+                            <div class="col-lg-3 col-sm-3">
+                                <#SelectCon id="hot" name="热门状态" >
+                                <option value="" selected="selected">全部</option>
+                                <option value="0">非热门</option>
+                                <option value="1">热门</option>
+                               </#SelectCon>
+                             </div>
+                            <div class="col-lg-3 col-sm-3">
+                                <#SelectCon id="type" name="评论类型" >
+                                <option value="" selected="selected">全部</option>
+                                <option value="0">文字评论</option>
+                                <option value="1">语音评论</option>
+                                </#SelectCon>
+                            </div>
+                            <div class="col-lg-3 col-sm-3">
+                                <#SelectCon id="reply" name="回复状态" >
+                                <option value="" selected="selected">全部</option>
+                                <option value="0">未回复</option>
+                                <option value="1">已回复</option>
+                               </#SelectCon>
+                             </div>
+                            <div class="col-lg-3 col-sm-3">
+                                <#button name="搜索" icon="fa-search" clickFun="PartComment.search()"/>
+                                <#button name="重置" icon="fa-trash" clickFun="PartComment.resetSearch()" space="true"/>
+                            </div>
+                        </div>
+                    <div class="row row-lg mt10">
+                        <div class="col-lg-3 col-sm-3">
+                            <#NameCon id="condition" name="条件" placeholder="姓名/手机号/评论/课程名称/节名称" value=""/>
+                        </div>
+                        <div class="col-lg-3 col-sm-3">
+                            <#TimeCon id="beginTime" name="评论开始日期" isTime="false" pattern="YYYY-MM-DD" value=""/>
+                        </div>
+                        <div class="col-lg-3 col-sm-3">
+                            <#TimeCon id="endTime" name="评论结束日期" isTime="false" pattern="YYYY-MM-DD" value=""/>
+                        </div>
+
+                    </div>
+                    <div class="row row-lg move-workBtn">
+                        <div class="col-lg-12 col-sm-12">
+                            <#button name="回复评论" icon="fa-reply" clickFun="PartComment.reply_edit()"/>
+                            <#button name="热门/非热门" icon="fa-fire" clickFun="PartComment.setHot()" space="true"/>
+                            <#button  btnCss="danger" name="删除" icon="fa-remove" clickFun="PartComment.deleteComment()" space="true"/>
+                        </div>
+                    </div>
+                    <#table id="PartCommentTab" style=""/>
+                </div>
+              </div>
+        </div>
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/system/partcomment/partcomment.js"></script>
+@}

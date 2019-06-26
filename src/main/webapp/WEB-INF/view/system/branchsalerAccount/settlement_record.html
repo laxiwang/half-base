@@ -1,0 +1,66 @@
+@layout("/common/_container.html"){
+<div class="row">
+	<div class="col-sm-12">
+		<div class="ibox float-e-margins">
+			<div class="ibox-title">
+				<h5>结算记录</h5>
+			</div>
+			<div class="ibox-content">
+				<div class="row">
+					<div class="row">
+						<div class="col-lg-3 col-sm-3">
+								<#SelectCon id="bsr_status" name="开票状态" >
+								<option value="" selected="selected">全部</option>
+								<option value="0">未开票</option>
+								<option value="1">已开票</option>
+								</#SelectCon>
+						</div>
+						<div class="col-lg-3 col-sm-3">
+								<#SelectCon id="pay_status" name="结算状态" >
+								<option value="" selected="selected">全部</option>
+								<option value="0">未结算</option>
+								<option value="1">已结算</option>
+								</#SelectCon>
+						</div>
+						<div class="col-lg-3 col-sm-3">
+
+						</div>
+						<div class="col-lg-3 col-sm-3">
+							<#button name="搜索" icon="fa-search" clickFun="SettlementRecord.search()" space="true"/>
+							<#button name="重置" icon="fa-trash" clickFun="SettlementRecord.resetSearch()" space="true"/>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-3 col-sm-3">
+							<#TimeCon id="beginTime" name="开始日期" isTime="false" pattern="YYYY-MM-DD"/>
+						</div>
+						<div class="col-lg-3 col-sm-3">
+							<#TimeCon id="endTime" name="结束日期" isTime="false" pattern="YYYY-MM-DD"/>
+						</div>
+						<div class="col-lg-3 col-sm-3">
+
+						</div>
+						<div class="col-lg-3 col-sm-3">
+
+						</div>
+					</div>
+					<div class="row row-lg move-workBtn">
+						<div class="col-lg-12 col-sm-12">
+							@if(shiro.hasPermission("/settlementRecord/exportList")){
+							<#button name="导出表格"   icon="fa-bar-chart" clickFun="SettlementRecord.exportList()"/>
+							@}
+							@if(shiro.hasPermission("/settlementRecord/setInvoiceNumber")){
+							<#button name="填写发票号码"   icon="fa-edit" clickFun="SettlementRecord.setInvoiceNumber()" space="true"/>
+							@}
+							@if(shiro.hasPermission("/settlementRecord/payStatus")){
+							<#button name="完成结算"   icon="fa-money" clickFun="SettlementRecord.payStatus()" space="true"/>
+							@}
+						</div>
+					</div>
+					<#table id="SettlementRecordTAB" style="min-width:1500px;"/>
+			</div>
+		</div>
+	</div>
+</div>
+<script src="${ctxPath}/static/modular/system/branchsalerAccount/settlement_record.js"></script>
+@}

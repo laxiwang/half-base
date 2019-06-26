@@ -1,0 +1,37 @@
+@layout("/common/_container.html"){
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <div class="form-horizontal" id="BchUserBranchSalerChangeInfo">
+            <div class="row">
+                <div class="col-sm-6 b-r">
+                    <#input id="pName" name="变更至分会" readonly="readonly" hidden="branchsaler"  hiddenValue="" value="" clickFun="BchUserBranchSalerChange.showDeptSelectTree(); return false;" style="background-color: #ffffff !important;" underline="true"/>
+                    <div  style="margin-bottom: 20px;">
+                        <span>手机号:</span><br/>
+                        <div id="phones">
+                            <input  name="phone" type="number" style="margin-bottom:10px;margin-right: 10px;float:left;"/>
+                        </div>
+                    </div>
+                    <div style="clear: both" >
+                        <#button  name="添加手机号" id="ensure"  icon="fa-plus" clickFun="BchUserBranchSalerChange.addPhone()"/>
+                    </div>
+
+                <!-- 父级分会的选择框 -->
+                <div id="parentDeptMenu" class="menuContent"
+                     style="display: none; position: absolute; z-index: 200;">
+                    <ul id="parentDeptMenuTree" class="ztree tree-box" style="width: 245px !important;"></ul>
+                </div>
+        </div>
+    </div>
+
+    <div class="row btn-group-m-t">
+        <div class="col-sm-10">
+            <#button btnCss="info" name="提交" id="ensure" icon="fa-check" clickFun="BchUserBranchSalerChange.add()"/>
+            <#button btnCss="danger" name="取消" id="cancel" icon="fa-eraser" clickFun="BchUserBranchSalerChange.close()"/>
+        </div>
+    </div>
+</div>
+
+</div>
+</div>
+<script src="${ctxPath}/static/modular/system/generaluser/userbranchsalerchange_info.js"></script>
+@}

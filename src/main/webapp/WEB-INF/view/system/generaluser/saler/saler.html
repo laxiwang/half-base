@@ -1,0 +1,52 @@
+@layout("/common/_container.html"){
+<div class="row">
+	<div class="col-sm-12">
+		<div class="ibox float-e-margins">
+			<div class="ibox-title">
+				<h5>销售大使管理</h5>
+			</div>
+			<div class="ibox-content">
+				<div class="row ">
+					<div class="row">
+						<div class="col-lg-3 col-sm-3">
+							<#NameCon id="condition" name="条件" placeholder="姓名/手机号"/>
+						</div>
+						<div class="col-lg-3 col-sm-3">
+						</div>
+						<div class="col-lg-3 col-sm-3">
+						</div>
+						<div class="col-lg-3 col-sm-3">
+							<#button name="搜索" icon="fa-search" clickFun="Saler.search()" space="true"/>
+							<#button name="重置" icon="fa-trash" clickFun="Saler.resetSearch()" space="true"/>
+						</div>
+					</div>
+					<div class="row row-lg move-workBtn">
+						<div class="col-lg-12 col-sm-12">
+							@if(shiro.hasPermission("/saler/salerOrder")){
+							<#button name="查看销售记录" icon="fa-angle-double-down" clickFun="Saler.salerOrderList()" />
+							@}
+							@if(shiro.hasPermission("/saler/salerUser")){
+							<#button name="查看推广记录" icon="fa-angle-double-down" clickFun="Saler.salerUserList()" space="true"/>
+							@}
+							@if(shiro.hasPermission("/saler/updateSalerRoyalty")){
+							<#button name="修改提成" icon="fa-pencil-square-o" clickFun="Saler.updateSalerInviteIndex()" space="true"/>
+							@}
+							@if(shiro.hasPermission("/saler/exportExl")){
+							<#button name="导出表格" icon="fa-bar-chart" clickFun="Saler.exportList()" space="true"/>
+							@}
+							@if(shiro.hasPermission("/saler/exportPicture")){
+							<#button name="导出二维码" icon="fa-picture-o" clickFun="Saler.exportPicture()" space="true"/>
+							@}
+							@if(shiro.hasPermission("/saler/closeSaler")){
+							<#button btnCss="danger" name="撤销邀请" id="ensure" icon="fa-ban" clickFun="Saler.closeSalerInvite()"/>
+							@}
+						</div>
+					</div>
+					<#table id="Saler" style=""/>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script src="${ctxPath}/static/modular/system/generaluser/saler/saler.js"></script>
+@}

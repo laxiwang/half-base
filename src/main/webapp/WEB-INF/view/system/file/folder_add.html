@@ -1,0 +1,27 @@
+@layout("/common/_container.html"){
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <div class="form-horizontal" id="filderInfoData">
+            <div class="row">
+                <#input  id="name" name="文件夹名称"  underline="true" />
+                <#select id="role" name="可见范围" underline="true">
+                    <option value="0"  selected='true'>全部</option>
+                    <option value="1"  >总会</option>
+                    <option value="2"  >省级</option>
+                    <option value="3"  >市级</option>
+                    <option value="4"  >区县</option>
+                    <option value="5"  >小渠道</option>
+                 </#select>
+            </div>
+        </div>
+        <div class="row btn-group-m-t">
+            <div class="col-sm-10">
+                <#button btnCss="info" name="提交" id="ensure" icon="fa-check" clickFun="Filderinfo.add()"/>
+                <#button btnCss="danger" name="取消" id="cancel" icon="fa-eraser" clickFun="Filderinfo.close()"/>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script src="${ctxPath}/static/modular/system/file/file_filderinfo.js"></script>
+@}

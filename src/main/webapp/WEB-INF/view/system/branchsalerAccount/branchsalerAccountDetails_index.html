@@ -1,0 +1,49 @@
+@layout("/common/_container.html"){
+<div class="row">
+    <div class="col-sm-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>分润详情</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row">
+                    <div class="row">
+                        <div class="col-lg-3 col-sm-3">
+                            <#NameCon id="condition" name="条件" placeholder="订单分会名称/订单编号" value=""/>
+                        </div>
+                        <div class="col-lg-3 col-sm-3">
+                            <#TimeCon id="beginTime" name="开始日期" isTime="false" pattern="YYYY-MM-DD"/>
+                        </div>
+                        <div class="col-lg-3 col-sm-3">
+                            <#TimeCon id="endTime" name="结束日期" isTime="false" pattern="YYYY-MM-DD"/>
+                        </div>
+                        <div class="col-lg-3 col-sm-3">
+                            <#button name="搜索" icon="fa-search" clickFun="BacDetails.search()" space="true"/>
+                            <#button name="重置" icon="fa-trash" clickFun="BacDetails.resetSearch()" space="true"/>
+                        </div>
+                    </div>
+                    <div class="row" >
+                        <div class="col-lg-3 col-sm-3">
+                        </div>
+                        <div class="col-lg-3 col-sm-3">
+                        </div>
+                        <div class="col-lg-3 col-sm-3">
+                        </div>
+                        <div class="col-lg-3 col-sm-3">
+                        </div>
+                    </div>
+                    <div class="row row-lg move-workBtn">
+                        <div class="col-lg-12 col-sm-12">
+                            @if(shiro.hasPermission("/bacDetails/exportList")){
+                            <#button name="导出表格"   icon="fa-bar-chart" clickFun="BacDetails.exportList()"/>
+                            @}
+                        </div>
+                    </div>
+                    <#table id="BacDetailsTable" style=""/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/system/branchsalerAccount/branchsalerAccountDetails.js"></script>
+@}

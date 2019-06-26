@@ -1,0 +1,79 @@
+@layout("/common/_container.html"){
+<div class="row">
+	<div class="col-sm-12">
+		<div class="ibox float-e-margins">
+			<div class="ibox-title">
+				<h5>用户管理</h5>
+			</div>
+			<div class="ibox-content">
+				<div class="row">
+					<div class="row">
+						<div class="col-lg-3 col-sm-3">
+							<#SelectCon id="userStatus" name="状态" >
+								<option value="" selected="selected">全部</option>
+								<option value="0">线上支付</option>
+								<option value="6">实体卡支付</option>
+								<option value="1">积分兑换</option>
+								<option value="2">知识送礼</option>
+								<option value="3">赠卡</option>
+								<option value="4">体验中</option>
+								<option value="5">体验过期</option>
+							</#SelectCon>
+					     </div>
+					     <div class="col-lg-3 col-sm-3">
+
+						 </div>
+					     <div class="col-lg-3 col-sm-3">
+						 </div>
+					     <div class="col-lg-3 col-sm-3">
+							 <#button name="搜索" icon="fa-search" clickFun="GeneralUser.search()" space="true"/>
+							 <#button name="重置" icon="fa-trash" clickFun="GeneralUser.resetSearch()" space="true"/>
+						 </div>
+				     </div>
+				     <div class="row">
+						 <div class="col-lg-3 col-sm-3">
+							 <#NameCon id="condition" name="条件" placeholder="姓名/手机号/分会名称/推广人姓名/推广人手机号" value=""/>
+						 </div>
+						 <div class="col-lg-3 col-sm-3">
+							 <#TimeCon id="beginTime" name="注册开始日期" isTime="false" pattern="YYYY-MM-DD" value="" />
+						 </div>
+						 <div class="col-lg-3 col-sm-3">
+							 <#TimeCon id="endTime" name="注册结束日期" isTime="false" pattern="YYYY-MM-DD" value=""/>
+						 </div>
+						 <div class="col-lg-3 col-sm-3">
+						 </div>
+					 </div>
+			        </div>
+			        <div class="row row-lg move-workBtn">
+						<div class="col-lg-12 col-sm-12">
+							@if(shiro.hasPermission("/generalUser/addUser/")){
+							<#button name="添加用户" icon="fa-plus" clickFun="GeneralUser.AddUser()"/>
+							@}
+
+							@if(shiro.hasPermission("/generalUser/changeUser")){
+							<#button name="修改" icon="fa-edit" clickFun="GeneralUser.openChangeUser()" space="true"/>
+							@}
+							@if(shiro.hasPermission("/generalUser/userBookStatus")){
+							<#button name="查看课程" icon="fa-angle-double-down" clickFun="GeneralUser.userBookStatus()" space="true"/>
+							@}
+							@if(shiro.hasPermission("/generalUser/playPecord")){
+							<#button name="查看更多播放记录" icon="fa-angle-double-down" clickFun="GeneralUser.playPecord()" space="true"/>
+							@}
+							@if(shiro.hasPermission("/generalUser/changeRemark")){
+							<#button name="修改备注" icon="fa-edit" clickFun="GeneralUser.openChangeRemark()" space="true"/>
+							@}
+							@if(shiro.hasPermission("/generalUser/exportList")){
+							<#button name="导出表格" icon="fa-bar-chart" clickFun="GeneralUser.exportList()" space="true"/>
+							@}
+							@if(shiro.hasPermission("/generalUser/exportPicture")){
+							<#button name="导出二维码" icon="fa-picture-o" clickFun="GeneralUser.exportPicture()" space="true"/>
+							@}
+						</div>
+					</div>
+					<#table id="GeneralUser" style="min-width:1500px;"/>
+				</div>
+		</div>
+	</div>
+</div>
+<script src="${ctxPath}/static/modular/system/generaluser/generaluser.js"></script>
+@}

@@ -1,0 +1,26 @@
+@layout("/common/_container.html"){
+<div class="ibox float-e-margins">
+	<div class="col-lg-10 col-sm-9">
+		<div class="row">
+		<!-- 	<div class="col-lg-4 col-sm-6">
+				<#TimeCon id="beginTime" name="开始日期" isTime="false"
+					pattern="YYYY-MM-DD" />
+			</div>
+			<div class="col-lg-4 col-sm-6">
+				<#TimeCon id="endTime" name="结束日期" isTime="false"
+					pattern="YYYY-MM-DD" />
+						<#button name="搜索" icon="fa-search" clickFun="playRecord.search()"
+						space="true" />
+					<#button name="重置" icon="fa-trash"
+						clickFun="playRecord.resetSearch()" space="true" />
+			</div> -->
+		</div>
+	
+	</div>
+	<div class="ibox-content">
+		<input type="hidden" id="userid" value="${userId}">
+		<#table id="playPecord" style=""/>
+	</div>
+</div>
+<script src="${ctxPath}/static/modular/system/generaluser/playRecord.js"></script>
+@}

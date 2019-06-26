@@ -1,0 +1,41 @@
+@layout("/common/_container.html"){
+<div class="row">
+    <div class="col-sm-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>激活记录</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row">
+                        <div class="row">
+                            <div class="col-lg-3 col-sm-3">
+                                <#TimeCon id="beginTime" name="开始日期" isTime="false" pattern="YYYY-MM-DD"/>
+                            </div>
+                            <div class="col-lg-3 col-sm-3">
+                                <#TimeCon id="endTime" name="结束日期" isTime="false" pattern="YYYY-MM-DD "/>
+                            </div>
+                            <div class="col-lg-3 col-sm-3">
+                            </div>
+                            <div class="col-lg-3 col-sm-3">
+                                <#button name="搜索" icon="fa-search" clickFun="CardActiveRecord.search()"/>
+                                <#button name="重置" icon="fa-trash" clickFun="CardActiveRecord.resetSearch()" space="true"/>
+                            </div>
+                        </div>
+                    <div class="row row-lg move-workBtn">
+                        <div class="col-lg-12 col-sm-12">
+                            @if(shiro.hasPermission("/cardActive/active")){
+                            <#button name="激活" icon="fa-plus" clickFun="CardActiveRecord.active()"/>
+                            @}
+                            @if(shiro.hasPermission("/cardActive/exportExl")){
+                            <#button name="导出表格" icon="fa-bar-chart" clickFun="CardActiveRecord.exportList()" />
+                            @}
+                        </div>
+                    </div>
+                    <#table id="CardActiveRecord" style=""/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/system/card/cardactiverecord/cardactiverecord.js"></script>
+@}

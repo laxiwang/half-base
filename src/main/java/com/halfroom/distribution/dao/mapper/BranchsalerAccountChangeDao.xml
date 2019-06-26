@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.halfroom.distribution.dao.BranchsalerAccountChangeDao">
+	<select id="selectBranchsalerAccountChanges" resultType="map">
+		select bac.id as bacId, bac.before_change_amount as beforeChangeAmount, bac.after_change_amount as AfterChangeAmount, bac.change_amount as changeAmount, 	bac.describe,
+		CASE WHEN bac.type=0 THEN '收入' WHEN bac.type=1 THEN '已结算' end as type,DATE_FORMAT(bac.add_time,'%Y-%m-%d	 %H:%i:%s') as addTime, 	b2.fullname as orderBranchsaler,
+		CASE WHEN 	b.level=0 THEN '总会' WHEN b.level=1 THEN '省级分会' WHEN b.level=2 THEN 	'市级分会' WHEN b.level=3 THEN '区县级分会' WHEN b.level=4 THEN '小渠道' ELSE 	'级别异常' end as levelName ,u.name as userName ,u.phone as userPhone,uorder.orderno as orderno, book.name as bookName,book.price	as bookFee,
+		CASE WHEN uorder.paysource=0 THEN '公众号' WHEN uorder.paysource=1 THEN 'ios'  	WHEN uorder.paysource=2 THEN 	'android' WHEN uorder.paysource=3 THEN '实体卡' 	ELSE '未知' end as	paySource,
+		CASE WHEN uorder.payrole=0 THEN '推广大使' WHEN uorder.payrole=1 THEN	'销售大使' WHEN uorder.payrole=2 THEN '自然流量 ' WHEN uorder.payrole=3 THEN '知识送礼'	ELSE '自然流量 '	end as payRole,
+		inuser.name as inName,u.name as uName
+		from branchsaler_account_change bac
+		left join branchsaler b on bac.branchsaler_id = b.id
+		left join user_order uorder on bac.orderno=uorder.orderno
+		left join branchsaler b2 on uorder.branchsaler_id = b2.id
+		left join user u on u.id=uorder.userid
+		left join book on book.id =uorder.bookid
+		left join user inuser on 	uorder.introducerid=inuser.id
+		where 1=1
+		<if test="branchsaler != null">
+			and bac.branchsaler_id=#{branchsaler}
+		</if>
+
+		<if test="condition != null and condition != ''">
+			and ( b2.simplename like CONCAT('%',#{condition},'%') or b2.fullname like CONCAT('%',#{condition},'%') )
+		</if>
+
+		<if test="accountType != null and accountType==0">
+			and uorder.branchsaler_id=#{branchsaler}
+		</if>
+		<if test="accountType != null and accountType==1">
+			and uorder.branchsaler_id!=#{branchsaler}
+		</if>
+
+		<if test="orderType != null and orderType == 0">
+			and uorder.paysource = #{orderType} and (uorder.payrole = 2 or uorder.payrole = 3)
+		</if>
+		<if test="paysource != null ">
+			and uorder.paysource = #{paysource}
+		</if>
+		<if test="payrole != null ">
+			and uorder.payrole = #{payrole}
+		</if>
+		<if test="beginTime != null and beginTime != ''">
+			and bac.add_time&gt;=#{beginTime}
+		</if>
+		<if test="endTime != null and endTime != ''">
+			and bac.add_time&lt;=#{endTime}
+		</if>
+		and bac.change_amount != 0 and bac.change_amount != 0.00
+		order by bac.add_time desc
+	</select>
+	<select id="selectSumNohasOrder" resultType="java.math.BigDecimal">
+		select COALESCE(sum(bac.change_amount),0) from
+		branchsaler_account_change bac
+		left join user_order uorder on bac.orderno = uorder.orderno
+		left join branchsaler b2 on uorder.branchsaler_id = b2.id
+		where 1=1
+		<if test="branchsaler != null and branchsaler != ''">
+			and bac.branchsaler_id=#{branchsaler}
+		</if>
+		<if test="condition != null and condition != ''">
+			and (b2.simplename like CONCAT('%',#{condition},'%') or b2.fullname like CONCAT('%',#{condition},'%'))
+		</if>
+		<if test="type != null">
+			and bac.type=#{type}
+		</if>
+		<if test="accountType != null and accountType==0">
+			and uorder.branchsaler_id=bac.branchsaler_id
+		</if>
+		<if test="accountType != null and accountType==1">
+			and uorder.branchsaler_id!=bac.branchsaler_id
+		</if>
+		<if test="paysource != null ">
+			and uorder.paysource = #{paysource}
+		</if>
+		<if test="payrole != null ">
+			and uorder.payrole = #{payrole}
+		</if>
+
+		<if test="beginTime != null and beginTime != ''">
+			and bac.add_time &gt;= #{beginTime}
+		</if>
+		<if test="endTime != null and endTime != ''">
+			and bac.add_time &lt;=  #{endTime}
+		</if>
+		<if test="paysources != null and paysources != ''">
+			and uorder.paysource in (${paysources})
+		</if>
+
+	</select>
+	<select id="selectSum" resultType="java.math.BigDecimal">
+		select COALESCE(sum(bac.change_amount),0) from
+		branchsaler_account_change bac
+		left join user_order uorder on bac.orderno=uorder.orderno
+		where 1=1 and uorder.state=1
+		<if test="branchsaler != null and branchsaler != ''">
+			and bac.branchsaler_id=#{branchsaler}
+		</if>
+		<if test="type != null">
+			and bac.type=#{type}
+		</if>
+		<if test="beginTime != null and beginTime != ''">
+			and bac.add_time &gt;= #{beginTime}
+		</if>
+		<if test="endTime != null and endTime != ''">
+			and bac.add_time &lt;= #{endTime}
+		</if>
+		<if test="paysource != null ">
+			and uorder.paysource = #{paysource}
+		</if>
+		<if test="payrole != null ">
+			and uorder.payrole = #{payrole}
+		</if>
+	</select>
+	<select id="selectBranchsalerAccountSum" resultType="map">
+		select b.id as branchsalerId,ifnull(sum(bac.change_amount),0) as
+		changeAmount ,b.fullname branchsalerName
+		from  branchsaler b
+		left join branchsaler_account_change  bac on bac.branchsaler_id = b.id
+		left join user_order o on o.orderno= bac.orderno and o.state=1
+		where 1=1 and b.id != 1  and bac.type=0
+		<if test="beginTime != null">
+			and bac.add_time &gt;= #{beginTime}
+		</if>
+		<if test="endTime != null">
+			and bac.add_time &lt;= #{endTime}
+		</if>
+		<if test="condition != null and condition != ''">
+			and b.fullname like CONCAT('%',#{condition},'%')
+		</if>
+		<if test="paysources != null and paysources != ''">
+			and o.paysource in (${paysources})
+		</if>
+		group by b.id
+		order by b.id asc
+	</select>
+	<select id="selectAccountByAccountType" resultType="java.math.BigDecimal">
+		select ifnull(sum(bac.change_amount),0) as
+		changeAmount
+		from  branchsaler b
+		left join branchsaler_account_change  bac on bac.branchsaler_id = b.id
+		left join user_order uorder on bac.orderno=uorder.orderno
+		where 1=1 and b.id != 1  and bac.type=0
+		<if test="branchsaler != null and branchsaler != ''">
+			and bac.branchsaler_id=#{branchsaler}
+		</if>
+		<if test="beginTime != null">
+			and bac.add_time &gt;= #{beginTime}
+		</if>
+		<if test="endTime != null">
+			and bac.add_time &lt;= #{endTime}
+		</if>
+		<if test="condition != null and condition != ''">
+			and b.fullname like CONCAT('%',#{condition},'%')
+		</if>
+		<if test="accountType != null and accountType==0">
+			and uorder.branchsaler_id=bac.branchsaler_id
+		</if>
+		<if test="accountType != null and accountType==1">
+			and uorder.branchsaler_id!=bac.branchsaler_id
+		</if>
+		<if test="paysources != null and paysources != ''">
+			and uorder.paysource in (${paysources})
+		</if>
+		order by b.id asc
+	</select>
+	<update id="batchUpdateBranchsalerAccountType">
+		 update branchsaler_account_change bac ,user_order  uorder set  bac.type=1
+		 where 1=1
+		 and   uorder.orderno=bac.orderno
+		 and   bac.branchsaler_id=#{branchsaler}
+		 and   bac.add_time &gt;= #{beginTime}
+		 and   bac.add_time &lt;= #{endTime}
+		<if test="paysources != null and paysources != ''">
+			and uorder.paysource in (${paysources})
+		</if>
+	</update>
+
+	<select id="branchsalerList" resultType="map">
+		select id as branchsalerId,fullname as branchsalerName,
+		CASE WHEN level=0 THEN '总会'
+		WHEN level=1 THEN '省级分会'
+		WHEN level=2 THEN '市级分会'
+		WHEN level=3 THEN '区县级分会'
+		WHEN level=4 THEN '小渠道'
+		ELSE '级别异常'
+		end  as levelName
+		from branchsaler where 1=1 and id !=1
+		<if test="condition != null and condition != ''">
+			and  simplename like CONCAT('%',#{condition},'%') or fullname like CONCAT('%',#{condition},'%')
+		</if>
+		order by id ASC
+	</select>
+	<select id="selectBranchsalerAccountDetails" resultType="map">
+		select   ob.fullname as orderBranchSaler  , case when ob.level=0 then '总会'    when ob.level=1 then '省级分会'  when ob.level=2 then '市级分会'   when ob.level=3 then '区县级分会'  when ob.level=4 then '小渠道'		else '级别异常'   		end  as orderLevelName,o.fee as orderFee ,o.orderno as orderNo ,
+		case when o.paysource=0 then '公众号' when o.paysource=1 then 'ios'  	when o.paysource=2 then 	'android' when o.paysource=3 then '实体卡支付' 	else '未知' end as	paySource,
+		case when o.payrole=0 then '推广大使' when o.payrole=1 then	'销售大使' when o.payrole=2 then '自然流量 ' when o.payrole=3 then '知识送礼'	else '自然流量 '	end as payRole, DATE_FORMAT(o.updatetime,'%Y-%m-%d	 %H:%i:%s') as orderCreateTime,
+		CONCAT(xq.branchSalerName,'&lt;br/&gt; ',xq.changeAmount) xqChangeAmount ,
+		CONCAT(qu.branchSalerName,'&lt;br/&gt; ',qu.changeAmount) quChangeAmount ,
+		CONCAT(shi.branchSalerName,'&lt;br/&gt;',shi.changeAmount) shiChangeAmount ,
+		CONCAT(sheng.branchSalerName,' &lt;br/&gt; ',sheng.changeAmount) shengChangeAmount ,
+		CONCAT('总会 &lt;br/&gt;',zong.changeAmount) zongChangeAmount
+		from   user_order   o
+		left  join  branchsaler ob on  ob.id=o.branchsaler_id
+
+		left join (
+			select  b.simplename as branchSalerName ,b.`level` as branchSalerLevel , c.change_amount as changeAmount, c.orderno as orderNo   from branchsaler_account_change  c
+			left join  branchsaler b on b.id = c.branchsaler_id
+			where b.`level`=0
+		)  zong  on zong.orderNo = o.orderno
+
+		left join (
+			select  b.simplename as branchSalerName ,b.`level` as branchSalerLevel , c.change_amount as changeAmount, c.orderno as orderNo   from branchsaler_account_change  c
+			left join  branchsaler b on b.id = c.branchsaler_id
+			where b.`level`=1
+		)  sheng  on sheng.orderNo = o.orderno
+
+		left join (
+			select  b.simplename as branchSalerName ,b.`level` as branchSalerLevel , c.change_amount as changeAmount, c.orderno as orderNo   from branchsaler_account_change  c
+			left join  branchsaler b on b.id = c.branchsaler_id
+			where b.`level`=2
+		)  shi  on shi.orderNo = o.orderno
+
+
+		left join (
+			select  b.simplename as branchSalerName ,b.`level` as branchSalerLevel , c.change_amount as changeAmount, c.orderno as orderNo   from branchsaler_account_change  c
+			left join  branchsaler b on b.id = c.branchsaler_id
+			where b.`level`=3
+		)  qu  on qu.orderNo = o.orderno
+
+		left join (
+			select  b.simplename as branchSalerName ,b.`level` as branchSalerLevel , c.change_amount as changeAmount, c.orderno as orderNo   from branchsaler_account_change  c
+			left join  branchsaler b on b.id = c.branchsaler_id
+			where b.`level`=4
+		)  xq  on xq.orderNo = o.orderno
+
+		where  o.state=1 and o.paysource!=3
+		<if test="branchsaler != null and branchsaler != ''">
+			and o.branchsaler_id=#{branchsaler}
+		</if>
+		<if test="condition != null and condition != ''">
+			and (ob.fullname like CONCAT('%',#{condition},'%')
+				  or
+				  o.orderno = #{condition}
+				)
+		</if>
+		<if test="beginTime != null">
+			and o.createtime &gt;= #{beginTime}
+		</if>
+		<if test="endTime != null">
+			and o.createtime &lt;= #{endTime}
+		</if>
+		order  by  o.createtime desc
+	</select>
+</mapper>

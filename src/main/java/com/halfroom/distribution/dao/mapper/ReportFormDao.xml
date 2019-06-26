@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.halfroom.distribution.dao.ReportFormDao">
+
+    <select id="selectRegisterUserNum" resultType="java.lang.Integer">
+        select count(1) from user u where 1=1
+        <if test="branchsaler != null">
+            and u.branchsaler =#{branchsaler}
+        </if>
+        <if test="beginTime!=null">
+            and u.create_time&gt;=#{beginTime}
+        </if>
+        <if test="endTime!=null">
+            and u.create_time &lt;= #{endTime}
+        </if>
+    </select>
+
+    <select id="selectPayUserNumOrderTime" resultType="map">
+        select count(uo.userid),uo.userid from user_order uo where 1=1 and  uo.state=1
+        <if test="branchsaler != null">
+            and uo.branchsaler =#{branchsaler}
+        </if>
+        <if test="beginTime !=null ">
+            and uo.createTime&gt;=#{beginTime}
+        </if>
+        <if test="endTime !=null ">
+            and uo.createTime&lt;=#{endTime}
+        </if>
+        <if test="isCard !=null  and isCard == false">
+            and uo.paysource != 3
+        </if>
+        group by uo.userid
+        <if test="isRepeat !=null  and isRepeat == true">
+           having count(uo.userid)>=2
+        </if>
+    </select>
+
+    <select id="selectActiveNum2" resultType="java.lang.Integer">
+        select count(DISTINCT u.id) from user_play_record uplay
+        left join user u on u.id=uplay.user_id
+        where 1=1
+        <if test="branchsaler != null">
+            and u.branchsaler = #{branchsaler}
+        </if>
+        <if test="beginTime != null">
+            and uplay.update_time&gt;= #{beginTime}
+            and u.create_time&gt;= #{beginTime}
+        </if>
+        <if test="endTime != null">
+            and uplay.update_time&lt;= #{endTime}
+            and u.create_time&lt;= #{endTime}
+        </if>
+    </select>
+
+    <select id="selectActiveNum" resultType="java.lang.Integer">
+        select count(DISTINCT u.id) from user_play_record uplay
+        left join user u on u.id=uplay.user_id
+        where 1=1
+        <if test="branchsaler != null">
+            and u.branchsaler = #{branchsaler}
+        </if>
+        <if test="beginTime != null">
+            and uplay.update_time&gt;= #{beginTime}
+        </if>
+        <if test="endTime != null">
+            and uplay.update_time&lt;= #{endTime}
+        </if>
+    </select>
+    <select id="selectOrderNum" resultType="java.lang.Integer">
+        select count(1) from user_order uo where 1=1 and  uo.state=1
+        <if test="branchsaler != null">
+            and uo.branchsaler =#{branchsaler}
+        </if>
+        <if test="beginTime !=null ">
+            and uo.createTime&gt;=#{beginTime}
+        </if>
+        <if test="endTime !=null ">
+            and uo.createTime&lt;=#{endTime}
+        </if>
+        <if test="isCard !=null  and isCard == false">
+            and uo.paysource != 3
+        </if>
+        <if test="isCard ==null">
+            and uo.paysource = #{paysource}
+        </if>
+        <if test="fee !=null ">
+            and uo.fee = #{fee}
+        </if>
+    </select>
+    <select id="selectPayUserNumUserTime"  resultType="map">
+        select count(uo.userid) from user_order uo
+        inner join user u  on u.id=uo.userid
+        where 1=1 and  uo.state=1
+        <if test="branchsaler != null">
+            and uo.branchsaler =#{branchsaler}
+        </if>
+        <if test="beginTime!=null">
+            and u.create_time&gt;=#{beginTime}
+        </if>
+        <if test="endTime!=null">
+            and u.create_time &lt;= #{endTime}
+        </if>
+        <if test="isCard !=null  and isCard == false">
+            and uo.paysource != 3
+        </if>
+        group by uo.userid
+        <if test="isRepeat !=null  and isRepeat == true">
+            having count(uo.userid)>=2
+        </if>
+
+    </select>
+
+    <select id="supGeneralUser" resultType="java.lang.Integer">
+        select count(distinct ub.user_id) from user u
+        inner join user_book ub on u.id=ub.user_id
+        inner join branchsaler b on b.id=u.branchsaler
+        where 1=1
+        and ub.type =1 and ub.end_time &gt;=now()
+        and  u.id  not in (select userid from user_order where state=1 )
+        and u.phone not in (select RIGHT(orderno,11) from user_order where state=1)
+        and  u.id  not in (select user_id from integral_exchange_record)
+        and  u.id  not in (select user_id from user_book where type=2)
+        and  u.id  in ( select user_id from  user_play_record)
+        <if test="flag == null and  branchsaler != null">
+            and u.branchsaler =#{branchsaler}
+        </if>
+        <if test="flag != null and flag == false and branchsaler != null">
+            and u.branchsaler =#{branchsaler}
+        </if>
+        <if test="flag != null and flag == true and branchsaler != null">
+            and (u.branchsaler =#{branchsaler} or b.pids like  CONCAT('%[',#{branchsaler},']%') )
+        </if>
+        <if test="beginTime!=null">
+            and u.create_time&gt;=#{beginTime}
+        </if>
+        <if test="endTime!=null">
+            and u.create_time &lt;= #{endTime}
+        </if>
+
+    </select>
+</mapper>

@@ -1,0 +1,928 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.halfroom.distribution.dao.GeneralUserDao">
+	<resultMap id="BaseResultMap"
+		type="com.halfroom.distribution.persistence.model.User">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="name" jdbcType="VARCHAR" property="name" />
+		<result column="phone" jdbcType="VARCHAR" property="phone" />
+		<result column="gender" jdbcType="VARCHAR" property="gender" />
+		<result column="head_image" jdbcType="VARCHAR" property="headimage" />
+		<result column="birthday" jdbcType="VARCHAR" property="birthday" />
+		<result column="country" jdbcType="VARCHAR" property="country" />
+		<result column="province" jdbcType="VARCHAR" property="province" />
+		<result column="city" jdbcType="VARCHAR" property="city" />
+		<result column="register_entry" jdbcType="INTEGER" property="registerentry" />
+		<result column="register_introducer" jdbcType="BIGINT" property="registerintroducer" />
+		<result column="branchSaler" jdbcType="INTEGER" property="branchsaler" />
+		<result column="update_time" jdbcType="TIMESTAMP" property="updatetime" />
+		<result column="create_time" jdbcType="TIMESTAMP" property="createtime" />
+		<result column="status" jdbcType="INTEGER" property="status" />
+		<result column="role" jdbcType="INTEGER" property="role" />
+		<result column="remark" jdbcType="VARCHAR" property="remark" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, name, phone, gender, head_image, birthday,country,
+		province, city,
+		county, register_entry, register_introducer, branchSaler, update_time,create_time, status, role,remark
+	</sql>
+
+
+	<insert id="insertUser" parameterType="com.halfroom.distribution.persistence.model.User"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into user
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="name != null">
+				name,
+			</if>
+			<if test="phone != null">
+				phone,
+			</if>
+			<if test="gender != null">
+				gender,
+			</if>
+			<if test="headimage != null">
+				head_image,
+			</if>
+			<if test="birthday != null">
+				birthday,
+			</if>
+			<if test="country != null">
+				country,
+			</if>
+			<if test="province != null">
+				province,
+			</if>
+			<if test="city != null">
+				city,
+			</if>
+			<if test="registerentry != null">
+				register_entry,
+			</if>
+			<if test="registerintroducer != null">
+				register_introducer,
+			</if>
+			<if test="branchsaler != null">
+				branchsaler,
+			</if>
+			<if test="updatetime != null">
+				update_time,
+			</if>
+			<if test="createtime != null">
+				create_time,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="role != null">
+				role,
+			</if>
+			<if test="remark != null">
+				remark,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="name != null">
+				#{name,jdbcType=VARCHAR},
+			</if>
+			<if test="phone != null">
+				#{phone,jdbcType=VARCHAR},
+			</if>
+			<if test="gender != null">
+				#{gender,jdbcType=VARCHAR},
+			</if>
+			<if test="headimage != null">
+				#{headimage,jdbcType=VARCHAR},
+			</if>
+			<if test="birthday != null">
+				#{birthday,jdbcType=VARCHAR},
+			</if>
+			<if test="country != null">
+				#{country,jdbcType=VARCHAR},
+			</if>
+			<if test="province != null">
+				#{province,jdbcType=VARCHAR},
+			</if>
+			<if test="city != null">
+				#{city,jdbcType=VARCHAR},
+			</if>
+			<if test="registerentry != null">
+				#{registerentry,jdbcType=INTEGER},
+			</if>
+			<if test="registerintroducer != null">
+				#{registerintroducer,jdbcType=BIGINT},
+			</if>
+			<if test="branchsaler != null">
+				#{branchsaler,jdbcType=INTEGER},
+			</if>
+			<if test="updatetime != null">
+				#{updatetime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createtime != null">
+				#{createtime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=INTEGER},
+			</if>
+			<if test="role != null">
+				#{role,jdbcType=INTEGER},
+			</if>
+			<if test="remark != null">
+				#{remark,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+
+	<insert id="insertUserBook"
+		parameterType="com.halfroom.distribution.persistence.model.UserBook">
+		insert into user_book
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="userid != null">
+				user_id,
+			</if>
+			<if test="bookid != null">
+				book_id,
+			</if>
+			<if test="type != null">
+				type,
+			</if>
+			<if test="starttime != null">
+				start_time,
+			</if>
+			<if test="endtime != null">
+				end_time,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="userid != null">
+				#{userid,jdbcType=INTEGER},
+			</if>
+			<if test="bookid != null">
+				#{bookid,jdbcType=INTEGER},
+			</if>
+			<if test="type != null">
+				#{type,jdbcType=INTEGER},
+			</if>
+			<if test="starttime != null">
+				#{starttime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="endtime != null">
+				#{endtime,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.halfroom.distribution.persistence.model.User">
+		update user
+		<set>
+			<if test="name != null">
+				name = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="phone != null">
+				phone = #{phone,jdbcType=VARCHAR},
+			</if>
+			<if test="gender != null">
+				gender = #{gender,jdbcType=VARCHAR},
+			</if>
+			<if test="headimage != null">
+				head_image = #{headimage,jdbcType=VARCHAR},
+			</if>
+			<if test="birthday != null">
+				birthday = #{birthday,jdbcType=TIMESTAMP},
+			</if>
+			<if test="country != null">
+				country = #{country,jdbcType=VARCHAR},
+			</if>
+			<if test="province != null">
+				province = #{province,jdbcType=VARCHAR},
+			</if>
+			<if test="city != null">
+				city = #{city,jdbcType=VARCHAR},
+			</if>
+			<if test="registerentry != null">
+				register_entry = #{registerentry,jdbcType=INTEGER},
+			</if>
+			<if test="registerintroducer != null">
+				register_introducer =
+				#{registerintroducer,jdbcType=BIGINT},
+			</if>
+			<if test="branchsaler != null">
+				branchSaler = #{branchsaler,jdbcType=INTEGER},
+			</if>
+			<if test="updatetime != null">
+				update_time = #{updatetime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createtime != null">
+				create_time = #{createtime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=INTEGER},
+			</if>
+			<if test="role != null">
+				role = #{role,jdbcType=INTEGER},
+			</if>
+			<if test="remark != null">
+				remark = #{remark,jdbcType=INTEGER}
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<select id="selectCityBybid" resultType="map">
+		select city from user where branchsaler = #{branchsaler} and city is not null 
+		group by city
+	</select>
+	<select id="selectCity" resultType="map">
+		select concat(city,'市') as name ,count(1) as value from user where city is not null
+		group by city
+	</select>
+	<select id="selectProvince" resultType="map">
+		select province as name ,count(1) as value  from user where  province is not null
+		group by province
+	</select>
+	<select id="selectUsers" resultType="map">
+	select u.id as uid,u.name as uName,u.gender as uGender,u.phone as uPhone,
+		CASE WHEN u.role=0 THEN '推广大使' WHEN u.role=1 THEN '销售大使' ELSE '推广大使' end as uRole,
+		CASE WHEN b.fullname is null THEN '总会' WHEN b.fullname='' THEN '总会' else b.fullname end as bName,
+		DATE_FORMAT(u.create_time,'%Y-%m-%d %H:%i:%s') as uCreateTime,
+		CASE WHEN (u.id in (select userid from user_order where state=1 and payrole!=3 and paysource!=3)) THEN '线上支付'
+		WHEN (u.id in (select userid from user_order where state=1 and payrole!=3 and paysource=3)) THEN '实体卡支付'
+			WHEN (iel.user_id is not null and ub.end_time &gt;=now() and ub.type=2 ) 	THEN  '积分兑换'
+		 	WHEN u.phone in (select RIGHT(orderno,11) from user_order where state=1 and payrole=3) THEN '知识送礼'
+			WHEN (ub.id is not null and ub.end_time &gt;=now() and ub.type=2)    THEN '赠卡'
+	        WHEN (ub2.id is not null and ub2.end_time &gt;=now() and ub2.type=1) 	THEN '体验中'
+	        WHEN (ub2.id is not null and ub2.end_time &lt;=now() and ub2.type=1)    THEN '体验过期' ELSE '注册用户'	end as uStatus,
+		CONCAT(u.province,'-',u.city)  AS address ,
+		convert( IFNULL(il.integral,0)-IFNULL(iel.exintegra,0) ,SIGNED)as	integral,
+		case when (u.register_introducer is not null   or u.register_introducer!=0)
+		then CONCAT('姓名:',inuser.name,'&lt;br/&gt;','手机号:',inuser.phone,'&lt;br/&gt;','分会:',b2.fullname)  end as inviterInfo  ,u.remark as remark,
+	      CONCAT('名称: ',bp.name,'&lt;br/&gt;','时间:',DATE_FORMAT(up.update_time ,'%Y-%m-%d %H:%i:%s')) as partlog, p.playCount as playCount,
+		case when floor(p2.playSum/86400) &gt; 0  then CONCAT(convert(floor(p2.playSum/86400),char),' 天 ',convert(floor(p2.playSum%86400/3600),char ),' 小时 ',convert(floor(p2.playSum%86400%3600/60),char),' 分钟 ',convert(floor(p2.playSum%86400%3600%60 ),char),' 秒 ')
+		when  ((floor(p2.playSum%86400/3600) &lt; 24) and (floor(p2.playSum%86400/3600) &gt; 0)) then CONCAT(convert(floor(p2.playSum%86400/3600),char ),' 小时 ',convert(floor(p2.playSum%86400%3600/60),char),' 分钟 ',convert(floor(p2.playSum%86400%3600%60 ),char),' 秒 ')
+		when  ((floor(p2.playSum%86400%3600/60) &lt; 60) and  (floor(p2.playSum%86400%3600/60) &gt; 0))then CONCAT(convert(floor(p2.playSum%86400%3600/60),char),' 分钟 ',convert(floor(p2.playSum%86400%3600%60 ),char),' 秒 ')
+		when  floor(p2.playSum%86400%3600%60) &lt; 60 then CONCAT(convert(floor(p2.playSum%86400%3600%60 ),char),' 秒 ')
+		end as playSum,
+		CASE WHEN b.level in (0,1) THEN b.simplename
+		WHEN  b.level in (2,3,4)  THEN  (select simplename from  branchsaler where id =( select substring_index(substring_index(b.pids,']', 3),'[', -1) ))
+		end as tempSimplename
+		from user u
+		left join branchsaler b on u.branchSaler=b.id
+		left join user  inuser on inuser.id=u.register_introducer
+		left join branchsaler b2 on inuser.branchSaler=b2.id
+		left join (select * from user_book	where type=2 group by user_id ORDER BY start_time desc )	ub on u.id=ub.user_id
+		left join (select * from user_book	where type=1 group by user_id ORDER BY start_time desc )	ub2 on u.id=ub2.user_id
+		left join (select user_id,sum(integral)	as integral from integral_origin group by user_id ) il on il.user_id=u.id
+		left join (select user_id,sum(integral) as exintegra from	integral_exchange_record group by user_id) iel on iel.user_id=u.id
+        left join (select  * from (select  * from user_play_record order by update_time desc limit 0,10000000 )as up group by up.user_id)  as up on u.id=up.user_id
+  		left join book_chapter_part bp on up.part_id=bp.book_chapter_part_id and  up.chapter_id =bp.book_chapter_id and up.book_id=bp.book_id
+		left join (select ifnull(sum(p.play_count),0) as playCount,p.user_id as userid from user_play_record  p  group by  p.user_id) p on  p.userid=u.id
+		left join (select ifnull(sum(p.play_sum),0) as playSum,p.user_id as userid from user_play_time_sum p group by p.user_id) p2 on  p2.userid=u.id
+		where 1=1
+		<if test="condition != null and condition != ''">
+			and ( u.name  like CONCAT('%',#{condition},'%')
+			or u.phone    like CONCAT(#{condition},'%')
+			or b.fullname like CONCAT('%',#{condition},'%')
+			or inuser.name like CONCAT('%',#{condition},'%')
+			or inuser.phone like CONCAT(#{condition},'%')
+			or u.id =#{condition}
+			)
+		</if>
+		<if test="branchsaler != null">
+			and u.branchsaler =#{branchsaler}
+		</if>
+		<if test="beginTime!=null">
+			and u.create_time&gt;=#{beginTime}
+		</if>
+		<if test="endTime!=null">
+			and u.create_time &lt;= #{endTime}
+		</if>
+		<if test="inUserid != null">
+			and u.register_introducer=#{inUserid}
+		</if>
+		<if test="userStatus != null and userStatus ==0">
+			<!-- 付费 -->
+			and u.id in (select uo.userid from user_order uo where uo.userid=u.id
+			and uo.state=1 and payrole!=3 and paysource!=3)
+		</if>
+		<if test="userStatus != null and userStatus ==6">
+			<!-- 实体卡支付 -->
+			and u.id not in (select uo.userid from user_order uo where uo.userid=u.id	and uo.state=1 and payrole!=3 and paysource!=3)
+			and u.id in (select uo.userid from user_order uo where uo.userid=u.id 	and uo.state=1 and payrole!=3 and paysource=3)
+
+		</if>
+		<if test="userStatus != null and userStatus ==1">
+			<!-- 积分兑换 -->
+			and  u.id  not in (select userid from user_order where state=1 and payrole!=3 and paysource!=3 )
+			and u.phone not  in (select RIGHT(orderno,11) from user_order where state=1)
+			and  u.id   in (select user_id from integral_exchange_record )
+		</if>
+		<if test="userStatus != null and userStatus ==2">
+			<!-- 知识送礼 -->
+			and u.phone  in (select RIGHT(orderno,11) from user_order where state=1 and payrole=3)
+			and u.id  not in (select user_id from integral_exchange_record )
+			and u.id  not in (select userid from user_order where state=1 and payrole!=3 )
+		</if>
+		<if test="userStatus != null and userStatus ==3">
+			<!-- 赠卡 -->
+			and u.id in (select ub.user_id from user_book ub
+			inner join user u on ub.user_id=u.id
+			where ub.type=2 and ub.end_time &gt;= now()
+			)
+			and u.id  not in (select userid from user_order where state=1 and paysource=3 or payrole=3 )
+			and u.id  not in (select userid from user_order where state=1 and paysource!=3 and payrole!=3 )
+			and u.phone not in (select RIGHT(orderno,11) from user_order where state=1)
+			and u.id not in (select user_id from integral_exchange_record  )
+		</if>
+
+		<if test="userStatus != null and userStatus ==4">
+			<!-- 体验中 -->
+			and u.id in (select ub.user_id from user_book ub
+			inner join user u on ub.user_id=u.id
+			where ub.type=1 and ub.end_time &gt;= now()
+			)
+			and   u.id  not in (select userid from user_order where state=1 )
+			and u.phone not in (select RIGHT(orderno,11) from user_order where state=1)
+			and  u.id  not in (select user_id from integral_exchange_record  )
+			and  u.id  not in (select user_id from user_book where type=2)
+		</if>
+		<if test="userStatus != null and userStatus ==5">
+			<!-- 体验过期 -->
+			and u.id in (select ub.user_id from user_book ub
+			inner join user u on ub.user_id=u.id
+			where ub.type=1 and ub.end_time &lt;= now()
+			)
+			and   u.id  not in (select userid from user_order where state=1 )
+			and u.phone not in (select RIGHT(orderno,11) from user_order where state=1)
+			and  u.id  not in (select user_id from integral_exchange_record )
+			and  u.id  not in (select user_id from user_book where type=2)
+		</if>
+		group by u.id
+		order by u.create_time desc
+	</select>
+	<select id="selectUsersPage" resultType="map">
+		select u.id as uid,u.name as uName,u.gender as uGender,u.phone as uPhone,
+		CASE WHEN u.role=0 THEN '推广大使' WHEN u.role=1 THEN '销售大使' ELSE '推广大使' end as uRole,
+		CASE WHEN b.fullname is null THEN '总会' WHEN b.fullname='' THEN '总会' else b.fullname end as bName,
+		DATE_FORMAT(u.create_time,'%Y-%m-%d %H:%i:%s') as uCreateTime,
+		CASE WHEN (u.id in (select userid from user_order where state=1 and payrole!=3 and paysource!=3)) THEN '线上支付'
+			WHEN (u.id in (select userid from user_order where state=1 and payrole!=3 and paysource=3)) THEN '实体卡支付'
+			WHEN (iel.user_id is not null and ub.end_time &gt;=now() and ub.type=2 ) 	THEN  '积分兑换'
+		 	WHEN u.phone in (select RIGHT(orderno,11) from user_order where state=1 and payrole=3) THEN '知识送礼'
+			WHEN (ub.id is not null and ub.end_time &gt;=now() and ub.type=2)    THEN '赠卡'
+	        WHEN (ub2.id is not null and ub2.end_time &gt;=now() and ub2.type=1) 	THEN '体验中'
+	        WHEN (ub2.id is not null and ub2.end_time &lt;=now() and ub2.type=1)    THEN '体验过期' ELSE '注册用户'
+			end as uStatus,
+		CONCAT(u.province,'-',u.city)  AS address ,
+		convert( IFNULL(il.integral,0)-IFNULL(iel.exintegra,0) ,SIGNED)as	integral,
+		case when (u.register_introducer is not null   or u.register_introducer!=0) then CONCAT('姓名:',inuser.name,'&lt;br/&gt;','手机号:',inuser.phone,'&lt;br/&gt;','分会:',b2.fullname)  end as inviterInfo  ,u.remark as remark,
+		p.playCount as playCount,
+		case when floor(p2.playSum/86400) &gt; 0  then CONCAT(convert(floor(p2.playSum/86400),char),' 天 ',convert(floor(p2.playSum%86400/3600),char ),' 小时 ',convert(floor(p2.playSum%86400%3600/60),char),' 分钟 ',convert(floor(p2.playSum%86400%3600%60 ),char),' 秒 ')
+			 when  ((floor(p2.playSum%86400/3600) &lt; 24) and (floor(p2.playSum%86400/3600) &gt; 0)) then CONCAT(convert(floor(p2.playSum%86400/3600),char ),' 小时 ',convert(floor(p2.playSum%86400%3600/60),char),' 分钟 ',convert(floor(p2.playSum%86400%3600%60 ),char),' 秒 ')
+			 when  ((floor(p2.playSum%86400%3600/60) &lt; 60) and  (floor(p2.playSum%86400%3600/60) &gt; 0))then CONCAT(convert(floor(p2.playSum%86400%3600/60),char),' 分钟 ',convert(floor(p2.playSum%86400%3600%60 ),char),' 秒 ')
+			 when  floor(p2.playSum%86400%3600%60) &lt; 60 then CONCAT(convert(floor(p2.playSum%86400%3600%60 ),char),' 秒 ')
+		end as playSum,p2.playSum as playSumSelect
+<!-- 		   CONCAT('名称: ',bp.name,'&lt;br/&gt;','时间:',DATE_FORMAT(up.update_time ,'%Y-%m-%d %H:%i:%s')) as partlog -->
+		from user u
+		left join branchsaler b on u.branchSaler=b.id
+		left join user  inuser on inuser.id=u.register_introducer
+		left join branchsaler b2 on inuser.branchSaler=b2.id
+		left join (select * from user_book	where type=2 group by user_id ORDER BY start_time desc )	ub on u.id=ub.user_id
+		left join (select * from user_book	where type=1 group by user_id ORDER BY start_time desc )	ub2 on u.id=ub2.user_id
+		left join (select user_id,sum(integral)	as integral from integral_origin group by user_id ) il on il.user_id=u.id
+		left join (select user_id,sum(integral) as exintegra from	integral_exchange_record group by user_id) iel on iel.user_id=u.id
+		left join (select ifnull(sum(p.play_count),0) as playCount,p.user_id as userid from user_play_record  p  group by  p.user_id) p on  p.userid=u.id
+		left join (select ifnull(sum(p.play_sum),0) as playSum,p.user_id as userid from user_play_time_sum p group by p.user_id) p2 on  p2.userid=u.id
+		where 1=1
+		<if test="condition != null and condition != ''">
+			and ( u.name  like CONCAT('%',#{condition},'%')
+			or u.phone    like CONCAT(#{condition},'%')
+			or b.fullname like CONCAT('%',#{condition},'%')
+			or inuser.name like CONCAT('%',#{condition},'%')
+			or inuser.phone like CONCAT(#{condition},'%')
+			or u.id =#{condition}
+			or inuser.id =#{condition}
+			)
+		</if>
+		<if test="branchsaler != null">
+			and u.branchsaler =#{branchsaler}
+		</if>
+		<if test="beginTime!=null">
+			and u.create_time&gt;=#{beginTime}
+		</if>
+		<if test="endTime!=null">
+			and u.create_time &lt;= #{endTime}
+		</if>
+		<if test="inUserid != null">
+			and u.register_introducer=#{inUserid}
+		</if>
+		<if test="userStatus != null and userStatus ==0">
+			<!-- 付费 -->
+			and u.id in (select uo.userid from user_order uo where uo.userid=u.id
+			and uo.state=1 and payrole!=3 and paysource!=3)
+		</if>
+		<if test="userStatus != null and userStatus ==6">
+			<!-- 实体卡支付 -->
+			and u.id not in (select uo.userid from user_order uo where uo.userid=u.id	and uo.state=1 and payrole!=3 and paysource!=3)
+			and u.id in (select uo.userid from user_order uo where uo.userid=u.id 	and uo.state=1 and payrole!=3 and paysource=3)
+
+		</if>
+		<if test="userStatus != null and userStatus ==1">
+			<!-- 积分兑换 -->
+			and  u.id  not in (select userid from user_order where state=1 and payrole!=3 and paysource!=3 )
+			and u.phone not  in (select RIGHT(orderno,11) from user_order where state=1)
+			and  u.id   in (select user_id from integral_exchange_record )
+		</if>
+		<if test="userStatus != null and userStatus ==2">
+			<!-- 知识送礼 -->
+			and u.phone  in (select RIGHT(orderno,11) from user_order where state=1 and payrole=3)
+			and u.id  not in (select user_id from integral_exchange_record )
+			and u.id  not in (select userid from user_order where state=1 and payrole!=3 )
+		</if>
+		<if test="userStatus != null and userStatus ==3">
+			<!-- 赠卡 -->
+			and u.id in (select ub.user_id from user_book ub
+			inner join user u on ub.user_id=u.id
+			where ub.type=2 and ub.end_time &gt;= now()
+			)
+			and u.id  not in (select userid from user_order where state=1 and paysource=3 or payrole=3 )
+			and u.id  not in (select userid from user_order where state=1 and paysource!=3 and payrole!=3 )
+			and u.phone not in (select RIGHT(orderno,11) from user_order where state=1)
+			and u.id not in (select user_id from integral_exchange_record  )
+		</if>
+
+		<if test="userStatus != null and userStatus ==4">
+			<!-- 体验中 -->
+			and u.id in (select ub.user_id from user_book ub
+			inner join user u on ub.user_id=u.id
+			where ub.type=1 and ub.end_time &gt;= now()
+			)
+			and   u.id  not in (select userid from user_order where state=1 )
+			and u.phone not in (select RIGHT(orderno,11) from user_order where state=1)
+			and  u.id  not in (select user_id from integral_exchange_record  )
+			and  u.id  not in (select user_id from user_book where type=2)
+		</if>
+		<if test="userStatus != null and userStatus ==5">
+			<!-- 体验过期 -->
+			and u.id in (select ub.user_id from user_book ub
+			inner join user u on ub.user_id=u.id
+			where ub.type=1 and ub.end_time &lt;= now()
+			)
+			and   u.id  not in (select userid from user_order where state=1 )
+			and u.phone not in (select RIGHT(orderno,11) from user_order where state=1)
+			and  u.id  not in (select user_id from integral_exchange_record )
+			and  u.id  not in (select user_id from user_book where type=2)
+		</if>
+		<if test="sort != null">
+			order by ${sort} ${order}
+		</if>
+		<if test="sort == null">
+			order by u.create_time desc
+		</if>
+
+	</select>
+	<select id="selectPlayone" resultType="java.lang.String">
+		select 	 concat('名称: ',bp.name,'&lt;br/&gt;','时间:	',DATE_FORMAT(uplay.update_time,'%Y-%m-%d %H:%i:%s')) as partlog
+		from user_play_record uplay
+		inner join book_chapter_part bp on uplay.book_id=bp.book_id and uplay.chapter_id = bp.book_chapter_id and  uplay.part_id =bp.book_chapter_part_id
+		where uplay.user_id=#{userId}  order by uplay.update_time  desc limit 1
+	</select>
+	<select id="selectByid" resultMap="BaseResultMap">
+		select * from user where
+		id=#{id}   limit 1
+	</select>
+
+	<select id="selectByPhone" resultMap="BaseResultMap">
+		select *from user where 1=1  
+		<if test="phone != null and phone != ''">
+			and phone=#{phone}
+		</if>
+		<if test="name != null and name != ''">
+			and name=#{name}
+		</if>
+		<if test="branchsaler != null and branchsaler != ''">
+			and branchsaler=#{branchsaler}
+		</if>
+		limit 1
+	</select>
+
+	<update id="setStatus">
+		update user set status = #{status} where id =
+		#{userId}
+	</update>
+	<select id="countGeneralUser" resultType="java.lang.Integer">
+		select count(1) from user u
+		inner join branchsaler b on b.id=u.branchsaler
+		where 1=1 
+		<if test="flag == null and  branchsaler != null">
+			and u.branchsaler =#{branchsaler}
+		</if>
+		<if test="flag != null and flag == false and branchsaler != null">
+			and u.branchsaler =#{branchsaler}
+		</if>
+		<if test="flag != null and flag == true and branchsaler != null">
+			and (u.branchsaler =#{branchsaler} or b.pids like  CONCAT('%[',#{branchsaler},']%') )
+		</if>
+		<if test="beginTime!=null">
+			and u.create_time&gt;=#{beginTime}
+		</if>
+		<if test="endTime!=null">
+			and u.create_time &lt;= #{endTime}
+		</if>
+		<if test="city">
+			and u.city =#{city}
+		</if>
+	</select>
+
+
+	<select id="paidGeneralUser" resultType="java.lang.Integer">
+		select count(distinct uo.userid) from user u
+		inner join user_order uo on  u.id=uo.userid
+		inner join branchsaler b on b.id=uo.branchsaler_id
+		where 1=1 
+		and uo.state =1 and uo.payrole!=3 and uo.paysource!=3
+		<if test="flag == null and  branchsaler != null">
+			and u.branchsaler =#{branchsaler}
+		</if>
+		<if test="flag != null and flag == false and branchsaler != null">
+			and u.branchsaler =#{branchsaler}
+		</if>
+		<if test="flag != null and flag == true and branchsaler != null">
+			and (u.branchsaler =#{branchsaler} or b.pids like  CONCAT('%[',#{branchsaler},']%') )
+		</if>
+		<if test="beginTime!=null">
+			and u.create_time&gt;=#{beginTime}
+		</if>
+		<if test="endTime!=null">
+			and u.create_time &lt;= #{endTime}
+		</if>
+		<if test="city">
+			and u.city =#{city}
+		</if>
+	</select>
+	<select id="cardGeneralUser" resultType="java.lang.Integer">
+		select count(distinct uo.userid) from user u
+		inner join user_order uo on  u.id=uo.userid
+		inner join branchsaler b on b.id=uo.branchsaler_id
+		where 1=1
+		and uo.state =1 and uo.payrole!=3 and uo.paysource=3 and
+		uo.userid  not in (select uo.userid from user_order  uo where  uo.state=1 and paysource!=3 and  payrole!=3 )
+		<if test="flag == null and  branchsaler != null">
+			and u.branchsaler =#{branchsaler}
+		</if>
+		<if test="flag != null and flag == false and branchsaler != null">
+			and u.branchsaler =#{branchsaler}
+		</if>
+		<if test="flag != null and flag == true and branchsaler != null">
+			and (u.branchsaler =#{branchsaler} or b.pids like  CONCAT('%[',#{branchsaler},']%') )
+		</if>
+		<if test="beginTime!=null">
+			and u.create_time&gt;=#{beginTime}
+		</if>
+		<if test="endTime!=null">
+			and u.create_time &lt;= #{endTime}
+		</if>
+		<if test="city">
+			and u.city =#{city}
+		</if>
+	</select>
+	<select id="supGeneralUser" resultType="java.lang.Integer">
+		select count(distinct ub.user_id) from user u
+		inner join user_book ub on u.id=ub.user_id
+		inner join branchsaler b on b.id=u.branchsaler	
+		where 1=1 
+		and ub.type =1 and ub.end_time &gt;=now()
+		 and  u.id  not in (select userid from user_order where state=1 )
+	     and u.phone not in (select RIGHT(orderno,11) from user_order where state=1)
+    	and  u.id  not in (select user_id from integral_exchange_record)
+    	and  u.id  not in (select user_id from user_book where type=2)
+	  <!--and    not exists (select 1 from user_order uo where   u.id=uo.userid and  uo.state=1 )    
+	    and    not exists (select 1 from user_order  uo where uo.state=1 and RIGHT(uo.orderno,11)=u.phone)
+    	and    not exists (select 1  from integra_exchange_log  i where  i.userid=u.id   )  -->
+		<if test="flag == null and  branchsaler != null">
+			and u.branchsaler =#{branchsaler}
+		</if>
+		<if test="flag != null and flag == false and branchsaler != null">
+			and u.branchsaler =#{branchsaler}
+		</if>
+		<if test="flag != null and flag == true and branchsaler != null">
+			and (u.branchsaler =#{branchsaler} or b.pids like  CONCAT('%[',#{branchsaler},']%') )
+		</if>
+		<if test="beginTime!=null">
+			and u.create_time&gt;=#{beginTime}
+		</if>
+		<if test="endTime!=null">
+			and u.create_time &lt;= #{endTime}
+		</if>
+		<if test="city">
+			and u.city =#{city}
+		</if>
+	</select>
+
+	<select id="supedGeneralUser" resultType="java.lang.Integer">
+		select count(distinct ub.user_id) from user u
+		inner join user_book ub on u.id=ub.user_id
+		inner join branchsaler b on b.id=u.branchsaler
+		where 1=1 
+		and ub.type =1 and ub.end_time &lt;=now()
+	 	and  u.id  not in (select userid from user_order where state=1 )    
+	  	and u.phone not in (select RIGHT(orderno,11) from user_order where state=1)
+    	and  u.id  not in (select user_id from integral_exchange_record)
+    	and  u.id  not in (select user_id from user_book where type=2)
+		<if test="flag == null and  branchsaler != null">
+			and u.branchsaler =#{branchsaler}
+		</if>
+		<if test="flag != null and flag == false and branchsaler != null">
+			and u.branchsaler =#{branchsaler}
+		</if>
+		<if test="flag != null and flag == true and branchsaler != null">
+			and (u.branchsaler =#{branchsaler} or b.pids like  CONCAT('%[',#{branchsaler},']%') )
+		</if>
+		<if test="beginTime!=null">
+			and u.create_time&gt;=#{beginTime}
+		</if>
+		<if test="endTime!=null">
+			and u.create_time &lt;= #{endTime}
+		</if>
+		<if test="city">
+			and u.city =#{city}
+		</if>
+	</select>
+
+	<select id="giftGiving" resultType="java.lang.Integer">
+		select count(*) from user u
+		inner join branchsaler b on b.id=u.branchsaler
+		where 1=1
+		and u.phone  in (select RIGHT(orderno,11) from user_order where state=1 and payrole=3)
+		and  u.id  not in (select userid from user_order where state=1 and payrole!=3 )
+    	and  u.id  not in (select user_id from integral_exchange_record )
+		<if test="flag == null and  branchsaler != null">
+			and u.branchsaler =#{branchsaler}
+		</if>
+		<if test="flag != null and flag == false and branchsaler != null">
+			and u.branchsaler =#{branchsaler}
+		</if>
+		<if test="flag != null and flag == true and branchsaler != null">
+			and (u.branchsaler =#{branchsaler} or b.pids like  CONCAT('%[',#{branchsaler},']%') )
+		</if>
+		<if test="beginTime!=null">
+			and u.create_time&gt;=#{beginTime}
+		</if>
+		<if test="endTime!=null">
+			and u.create_time &lt;= #{endTime}
+		</if>
+		<if test="city">
+			and u.city =#{city}
+		</if>
+	</select>
+	<select id="cardGiving" resultType="java.lang.Integer">
+		select count(distinct ub.user_id) from user_book ub
+		inner join user u on u.id=ub.user_id
+		inner join branchsaler b on b.id=u.branchsaler
+		where 1=1 
+   	    and ub.type=2
+		and u.id  not in (select userid from user_order where state=1 and paysource=3 or payrole=3 )
+		and u.id  not in (select userid from user_order where state=1 and paysource!=3 and payrole!=3 )
+		and u.phone not in (select RIGHT(orderno,11) from user_order where state=1)
+		and u.id not in (select user_id from integral_exchange_record )
+		<if test="flag == null and  branchsaler != null">
+			and u.branchsaler =#{branchsaler}
+		</if>
+		<if test="flag != null and flag == false and branchsaler != null">
+			and u.branchsaler =#{branchsaler}
+		</if>
+		<if test="flag != null and flag == true and branchsaler != null">
+			and (u.branchsaler =#{branchsaler} or b.pids like  CONCAT('%[',#{branchsaler},']%') )
+		</if>
+		<if test="beginTime!=null">
+			and u.create_time&gt;=#{beginTime}
+		</if>
+		<if test="endTime!=null">
+			and u.create_time  &lt;= #{endTime}
+		</if>
+		<if test="city">
+			and u.city =#{city}
+		</if>
+	</select>
+	<select id="exchange" resultType="java.lang.Integer">
+		select count(*) from user u
+		inner join branchsaler b on b.id=u.branchsaler
+		where 1=1
+		and  u.id  not in (select userid from user_order where state=1 and payrole!=3 and paysource!=3 )
+	  	and u.phone not  in (select RIGHT(orderno,11) from user_order where state=1)
+    	and  u.id   in (select user_id from integral_exchange_record )
+		<if test="flag == null and  branchsaler != null">
+			and u.branchsaler =#{branchsaler}
+		</if>
+		<if test="flag != null and flag == false and branchsaler != null">
+			and u.branchsaler =#{branchsaler}
+		</if>
+		<if test="flag != null and flag == true and branchsaler != null">
+			and (u.branchsaler =#{branchsaler} or b.pids like  CONCAT('%[',#{branchsaler},']%') )
+		</if>
+		<if test="beginTime!=null">
+			and u.create_time&gt;=#{beginTime}
+		</if>
+		<if test="endTime!=null">
+			and u.create_time &lt;= #{endTime}
+		</if>
+		<if test="city">
+			and u.city =#{city}
+		</if>
+	</select>
+	<select id="experienceGeneralUser"
+		resultType="com.halfroom.distribution.persistence.model.UserBook">
+		select * from user_book where 1=1
+		<if test="userid != null">
+			and userid = #{userid}
+		</if>
+		<if test="time != null">
+			and end_time &lt;= time
+		</if>
+		<if test="city">
+			and u.city =#{city}
+		</if>
+		limit 1
+	</select>
+	<select id="payedGeneralUser"
+		resultType="com.halfroom.distribution.persistence.model.UserOrder">
+		select * from user_order where 1=1 and state=1
+		<if test="userid != null">
+			and userid = #{userid}
+		</if>
+		<if test="city">
+			and u.city =#{city}
+		</if>
+		limit 1
+	</select>
+
+
+	<select id="playRecord" resultType="map">
+		select part.name as partName,
+		case when play.play_count=0 then 1 else play.play_count end as palyCount,
+		case when play.play_time_end is null then concat('0' ,'秒') when play.play_time_end &lt;60 then concat(convert(play.play_time_end,char) ,'秒') else concat(convert(floor(play.play_time_end/60),char),'分',convert(play.play_time_end%60, char), '秒') end as palyTimeEnd,DATE_FORMAT( play.update_time ,'%Y-%m-%d %H:%i:%s') as playTime,
+		case when floor(playSum.play_sum/86400) &gt; 0  then CONCAT(convert(floor(playSum.play_sum/86400),char),' 天 ',convert(floor(playSum.play_sum%86400/3600),char ),' 小时 ',convert(floor(playSum.play_sum%86400%3600/60),char),' 分钟 ',convert(floor(playSum.play_sum%86400%3600%60 ),char),' 秒 ')
+		when  ((floor(playSum.play_sum%86400/3600) &lt; 24) and (floor(playSum.play_sum%86400/3600) &gt; 0)) then CONCAT(convert(floor(playSum.play_sum%86400/3600),char ),' 小时 ',convert(floor(playSum.play_sum%86400%3600/60),char),' 分钟 ',convert(floor(playSum.play_sum%86400%3600%60 ),char),' 秒 ')
+		when  ((floor(playSum.play_sum%86400%3600/60) &lt; 60) and  (floor(playSum.play_sum%86400%3600/60) &gt; 0))then CONCAT(convert(floor(playSum.play_sum%86400%3600/60),char),' 分钟 ',convert(floor(playSum.play_sum%86400%3600%60 ),char),' 秒 ')
+		when  floor(playSum.play_sum%86400%3600%60) &lt; 60 then CONCAT(convert(floor(playSum.play_sum%86400%3600%60 ),char),' 秒 ')
+		end as playSum
+		from user u
+		left join user_play_record play on 	u.id=play.user_id
+		left join book_chapter_part part on play.book_id=part.book_id and play.chapter_id = part.book_chapter_id and play.part_id = part.book_chapter_part_id
+		left join user_play_time_sum playSum on playSum.book_id=play.book_id and playSum.book_chapter_id = play.chapter_id and playSum.book_chapter_part_id = play.part_id and playSum.user_id=play.user_id
+		where
+		1=1 and part.status=0
+		and play.user_id=#{userid}
+		<if test="beginTime!=null">
+			and play.update_time&gt;=#{beginTime}
+		</if>
+		<if test="endTime!=null">
+			and play.update_time&lt;=#{endTime}
+		</if>
+		order by play.update_time desc
+	</select>
+	<select id="selectOnSelveBooks" resultType="com.halfroom.distribution.persistence.model.Book">
+		select * from book where status=2
+	</select>
+
+	<select id="selectSalersStatistics" resultType="map">
+		select u.id as uid, u.name as uName,u.phone as uPhone, uo.fee,
+		case when sinl.status=0 then '邀请中' when sinl.status=1 then '已接受'	when sinl.status=2 then '已拒绝' when sinl.status=3 then '已撤销' end as status,
+		DATE_FORMAT(sinl.createtime ,'%Y-%m-%d %H:%i:%s') as inviteTime,	DATE_FORMAT(sinl.updatetime ,'%Y-%m-%d %H:%i:%s') as updatetime, 	sinl.remark as remark
+		from user u
+		left join saler_invite_log sinl on u.id = sinl.user_id
+		left join (select introducerid,sum(fee) as fee from user_order where state=1 and payrole=1 group by introducerid) uo on u.id =uo.introducerid
+		where 1=1
+		<if test="condition != null and condition != '' ">
+			and ( u.name like CONCAT(#{condition},'%')
+			or u.phone like CONCAT(#{condition},'%')
+			)
+		</if>
+		<if test="branchsaler != null">
+			and u.branchsaler = #{branchsaler}
+		</if>
+		<if test="beginTime != null">
+			and sinl.createTime&gt;= #{beginTime}
+		</if>
+		<if test="endTime != null">
+			and sinl.createTime&lt;= #{endTime}
+		</if>
+		<if test="status != null">
+			and sinl.status = #{status}
+		</if>
+		<if test="status == null">
+			and (sinl.status = 0 or sinl.status = 1 or sinl.status = 2
+			or sinl.status = 3)
+		</if>
+		order by inviteTime desc
+	</select>
+
+	<select id="selectExtendsStatistics" resultType="map">
+		select u.id as uid, u.name as uName,u.phone as uPhone, uo.fee as fee,
+		case when sil.status is null then '待邀请' 
+		     when sil.status = 0 then '邀请中'
+		     when sil.status = 1 then '已接收'
+		     when sil.status = 2 then '已拒绝'
+		     when sil.status = 3 then '已撤销'
+		     end as silStatus
+		from user u
+		left join (select introducerid,sum(fee) as fee from user_order where
+		state=1 and payrole=0 group by introducerid) uo on u.id =
+		uo.introducerid
+		left join saler_invite_log sil  on sil.user_id = u.id 
+		where 1=1 
+		<if test="condition != null and condition != '' ">
+			and ( u.name like CONCAT(#{condition},'%')
+			or u.phone like CONCAT(#{condition},'%')
+			)
+		</if>
+		<if test="branchsaler != null">
+			and u.branchsaler = #{branchsaler}
+		</if>
+			<if test="role != null">
+			and u.role = #{role}
+		</if>
+		order by uo.fee desc
+	</select>
+	<select id="selectActiveNum" resultType="java.lang.Integer">
+		select count(DISTINCT u.id) from user_play_record uplay 
+		inner join user u on u.id=uplay.user_id
+		where 1=1
+		<if test="branchsaler != null">
+			and u.branchsaler = #{branchsaler}
+		</if>
+		<if test="beginTime != null">
+			and uplay.update_time&gt;= #{beginTime}
+		</if>
+		<if test="endTime != null">
+			and uplay.update_time&lt;= #{endTime}
+		</if>
+	</select>
+
+	<select id="selectUserBookStatus"  resultType="map">
+		select u.name as userName,u.phone as userPhone ,b.name as bookName,
+		case when  uo.userid is not null  and  uo.paysource=3 then '实体卡支付'
+			 when  uo.userid is not null  and uo.payrole != 3  and  uo.paysource != 3 then '付费购买'
+		     when  songli.bookid is not null   then '知识送礼'
+		     when  iel.user_id is not null and ub.end_time &gt;=now() and ub.type=2  then  '积分兑换'
+		     when ( ub.user_id is not null and ub.end_time &gt;=now() and ub.type=2)    then '赠卡'
+		     when (ub.id is not null and ub.end_time &gt;=now() and ub.type=1) 	THEN '体验中'
+		     when (ub.id is not null and ub.end_time &lt;=now() and ub.type=1)    THEN '体验过期'
+		     end  as userBookStatus
+		from user_book ub
+		inner join user  u on ub.user_id=u.id
+		left  join book  b on ub.book_id=b.id
+		left join  user_order   uo on  uo.userid=ub.user_id and uo.bookid=ub.book_id and uo.state=1
+		left  join (select bookid,RIGHT(orderno,11) as phone  from user_order where state=1 and payrole=3) as songli on songli.bookid=ub.book_id and songli.phone=u.phone
+		left join  integral_exchange_record  iel on iel.user_id=ub.user_id and iel.book_id=ub.book_id
+		where 1=1
+		<if test="branchsaler != null">
+			and u.branchsaler = #{branchsaler}
+		</if>
+		<if test="userId != null">
+			and u.id = #{userId}
+		</if>
+		group by ub.book_id
+	</select>
+
+	<select id="selectUserIntegraList" resultType="map">
+		select u.name as userName,u.phone as userPhone ,sum(inte.integral) as userFen from user u
+		inner join integral_origin inte on u.id= inte.user_id and u.role=0
+		<if test="branchsaler != null">
+			and u.branchsaler = #{branchsaler}
+		</if>
+		<if test="beginTime != null">
+			and inte.create_time &gt;= #{beginTime}
+		</if>
+		<if test="endTime != null">
+			and inte.create_time &lt;= #{endTime}
+		</if>
+		group by inte.user_id	order by sum(integral) desc
+	</select>
+	<select id="selectBranchsalerUserPlay" resultType="map">
+		select u.`name` userName ,u.phone userPhone, b.fullname userBranchSaler,
+		case when floor(p2.playSum/86400) &gt; 0  then CONCAT(convert(floor(p2.playSum/86400),char),' 天 ',convert(floor(p2.playSum%86400/3600),char ),' 小时 ',convert(floor(p2.playSum%86400%3600/60),char),' 分钟 ',convert(floor(p2.playSum%86400%3600%60 ),char),' 秒 ')
+		when  ((floor(p2.playSum%86400/3600) &lt; 24) and (floor(p2.playSum%86400/3600) &gt; 0)) then CONCAT(convert(floor(p2.playSum%86400/3600),char ),' 小时 ',convert(floor(p2.playSum%86400%3600/60),char),' 分钟 ',convert(floor(p2.playSum%86400%3600%60 ),char),' 秒 ')
+		when  ((floor(p2.playSum%86400%3600/60) &lt; 60) and  (floor(p2.playSum%86400%3600/60) &gt; 0))then CONCAT(convert(floor(p2.playSum%86400%3600/60),char),' 分钟 ',convert(floor(p2.playSum%86400%3600%60 ),char),' 秒 ')
+		when  floor(p2.playSum%86400%3600%60) &lt; 60 then CONCAT(convert(floor(p2.playSum%86400%3600%60 ),char),' 秒 ')
+		end as  userPlaySum ,
+		p2.playSum
+		from user  u
+		left join branchsaler b on u.branchsaler = b.id
+		left join (select ifnull(sum(p.play_sum),0) as playSum,p.user_id as userid from user_play_time_sum p group by p.user_id) as  p2 on  p2.userid=u.id
+		where 1=1
+		<if test="phones != null and phones !=''">
+			and u.phone in( ${phones} )
+		</if>
+		order by p2.playSum desc
+	</select>
+</mapper>

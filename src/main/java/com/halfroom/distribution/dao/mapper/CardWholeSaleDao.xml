@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.halfroom.distribution.dao.CardWholeSaleDao">
+	<resultMap id="BaseResultMap"
+		type="com.halfroom.distribution.persistence.model.CardWholeSale">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="from_saler_id" jdbcType="INTEGER" property="fromSalerId" />
+		<result column="to_saler_id" jdbcType="INTEGER" property="toSalerId" />
+		<result column="card_no_start" jdbcType="INTEGER" property="cardNoStart" />
+		<result column="card_no_end" jdbcType="INTEGER" property="cardNoEnd" />
+		<result column="card_price" jdbcType="DECIMAL" property="cardPrice" />
+		<result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
+		<result column="updatetime" jdbcType="TIMESTAMP" property="updatetime" />
+		<result column="remark" jdbcType="VARCHAR" property="remark" />
+		<result column="status" jdbcType="INTEGER" property="status" />
+		<result column="type" jdbcType="INTEGER" property="type" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, from_saler_id, to_saler_id, card_no_start, card_no_end, card_price,
+		createtime,
+		updatetime, remark, status,`type`
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from card_whole_sale
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from card_whole_sale
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insertSelective"
+		parameterType="com.halfroom.distribution.persistence.model.CardWholeSale">
+		insert into card_whole_sale
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="fromSalerId != null">
+				from_saler_id,
+			</if>
+			<if test="toSalerId != null">
+				to_saler_id,
+			</if>
+			<if test="cardNoStart != null">
+				card_no_start,
+			</if>
+			<if test="cardNoEnd != null">
+				card_no_end,
+			</if>
+			<if test="cardPrice != null">
+				card_price,
+			</if>
+			<if test="createtime != null">
+				createtime,
+			</if>
+			<if test="updatetime != null">
+				updatetime,
+			</if>
+			<if test="remark != null">
+				remark,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="type != null">
+				type,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="fromSalerId != null">
+				#{fromSalerId,jdbcType=INTEGER},
+			</if>
+			<if test="toSalerId != null">
+				#{toSalerId,jdbcType=INTEGER},
+			</if>
+			<if test="cardNoStart != null">
+				#{cardNoStart,jdbcType=INTEGER},
+			</if>
+			<if test="cardNoEnd != null">
+				#{cardNoEnd,jdbcType=INTEGER},
+			</if>
+			<if test="cardPrice != null">
+				#{cardPrice,jdbcType=DECIMAL},
+			</if>
+			<if test="createtime != null">
+				#{createtime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updatetime != null">
+				#{updatetime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="remark != null">
+				#{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=INTEGER},
+			</if>
+			<if test="type != null">
+				#{type,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective"
+		parameterType="com.halfroom.distribution.persistence.model.CardWholeSale">
+		update card_whole_sale
+		<set>
+			<if test="fromSalerId != null">
+				from_saler_id = #{fromSalerId,jdbcType=INTEGER},
+			</if>
+			<if test="toSalerId != null">
+				to_saler_id = #{toSalerId,jdbcType=INTEGER},
+			</if>
+			<if test="cardNoStart != null">
+				card_no_start = #{cardNoStart,jdbcType=INTEGER},
+			</if>
+			<if test="cardNoEnd != null">
+				card_no_end = #{cardNoEnd,jdbcType=INTEGER},
+			</if>
+			<if test="cardPrice != null">
+				card_price = #{cardPrice,jdbcType=DECIMAL},
+			</if>
+			<if test="createtime != null">
+				createtime = #{createtime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updatetime != null">
+				updatetime = #{updatetime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="remark != null">
+				remark = #{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=INTEGER},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<select id="cardWholeSaleList" resultType="map">
+		select c.id,b.fullname as fromBname ,b2.fullname as toBname,
+		case when c.type=0 then '普通划拨' when c.type=1 then '总部调拨' else '普通划拨' end as type,
+		concat(convert(c.card_no_start,char) ,' - - ',convert(c.card_no_end,char)) as cardNoRange,
+		c.card_price as fee,
+			CASE WHEN  c.status=0 THEN '待确认'
+	  		      WHEN  c.status=1 THEN '已确认'
+	  		      WHEN  c.status=2 THEN '已取消'
+	  		 END  
+		as status,
+		DATE_FORMAT(c.createtime,'%Y-%m-%d %H:%i:%s') as createtime,
+		DATE_FORMAT(c.updatetime,'%Y-%m-%d %H:%i:%s') as updatetime,
+		c.remark
+		from card_whole_sale c
+		inner join branchsaler b on c.from_saler_id = b.id
+		inner join branchsaler b2 on c.to_saler_id = b2.id
+		where 1=1
+		<if test="from_saler_id != null">
+			and c.from_saler_id=#{from_saler_id}
+		</if>
+		<if test="to_saler_id != null">
+			and c.to_saler_id=#{to_saler_id}
+		</if>
+		<if test="beginTime != null">
+			and c.createtime &gt;= #{beginTime}
+		</if>
+		<if test="endTime != null">
+			and c.createtime &lt;=#{endTime}
+		</if>
+		<if test="status != null">
+			and c.status=#{status}
+		</if>
+		order by c.createtime desc
+	</select>
+	
+	<select id="hasCardsInWholeSale" resultType="Boolean">
+		select count(*) from card_whole_sale
+		<where> 
+		    <if test="fromSalerId != null">
+		        from_saler_id = #{fromSalerId}
+		    </if> 
+	     	<if test="toSalerId != null">
+		        and to_saler_id = #{toSalerId}
+		    </if> 
+		    <if test="status != null">
+		        and status = #{status}
+		    </if>
+		    and ((#{cardNoStart} &gt;= card_no_start and #{cardNoStart} &lt;= card_no_end) or (card_no_start &lt;= #{cardNoEnd} and card_no_end &gt;= #{cardNoEnd}))
+	  	</where>
+	</select>
+</mapper>

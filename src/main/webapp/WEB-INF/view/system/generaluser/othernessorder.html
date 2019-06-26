@@ -1,0 +1,25 @@
+@layout("/common/_container.html"){
+<div class="ibox float-e-margins">
+	<div class="col-lg-12 col-sm-12">
+		<div class="ibox-title">
+			<h5>无归属用户</h5>
+		</div>
+		<div class="ibox-content">
+			<div class="row">
+				<div class="row">
+				</div>
+				<div class="row row-lg move-workBtn">
+					<div class="col-lg-12 col-sm-12">
+						@if(shiro.hasPermission("/othernessOrder/exportList")){
+						<#button name="导出表格" icon="fa-bar-chart" clickFun="OthernessOrder.exportList()"/>
+						@}
+					</div>
+				</div>
+				<#table id="othernessOrder" style=""/>
+			</div>
+
+		</div>
+	</div>
+</div>
+<script src="${ctxPath}/static/modular/system/generaluser/othernessorder.js"></script>
+@}

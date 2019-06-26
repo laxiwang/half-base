@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.halfroom.distribution.dao.BookChapterPartCommentDao">
+  <resultMap id="BaseResultMap" type="com.halfroom.distribution.persistence.model.BookChapterPartComment">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="book_id" jdbcType="INTEGER" property="bookId" />
+    <result column="chapter_id" jdbcType="INTEGER" property="chapterId" />
+    <result column="part_id" jdbcType="INTEGER" property="partId" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="at_comment_id" jdbcType="BIGINT" property="atCommentId" />
+    <result column="type" jdbcType="TINYINT" property="type" />
+    <result column="time_sum" jdbcType="INTEGER" property="timeSum" />
+    <result column="is_hot_comment" jdbcType="TINYINT" property="isHotComment" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, book_id, chapter_id, part_id, content, user_id, at_comment_id, type, time_sum, 
+    is_hot_comment, create_time, update_time
+  </sql>
+
+  <select id="list" resultType="map">
+    select `comment`.id as commentId, u.id as userId,u.name as userName,u.phone as userPhone,
+    book.name as bookName,part.name as partName,`comment`.content as commentContent,
+    CASE WHEN  `comment`.type=0 THEN  '文字评论' WHEN `comment`.type=1 THEN '语音评论' END as commentType,
+    CASE WHEN  `comment`.is_hot_comment=0 THEN '非热门' WHEN   `comment`.is_hot_comment=1 THEN  '热门' END  as isHot,
+    CASE WHEN comment2.id is not null THEN '已回复' ELSE '未回复' END reply,
+    DATE_FORMAT(`comment`.create_time,'%Y-%m-%d %H:%i:%s')    as commentCreateTime
+    from  book_chapter_part_comment `comment`
+    left join user u on u.id =`comment`.user_id
+    left join book_chapter_part part on part.book_id=`comment`.book_id and  part.book_chapter_id = `comment`.chapter_id and part.book_chapter_part_id= `comment`.part_id
+    left join book book on book.id =`comment`.book_id
+    left join book_chapter_part_comment  comment2 on `comment`.id=comment2.at_comment_id
+    where 1=1 and `comment`.at_comment_id is null
+      <if test="condition != null and condition != ''">
+          and ( u.name  like CONCAT('%',#{condition},'%')
+          or u.phone    like CONCAT('%',#{condition},'%')
+          or book.name like CONCAT('%',#{condition},'%')
+          or part.name like CONCAT('%',#{condition},'%')
+          or `comment`.content like CONCAT('%',#{condition},'%')
+          )
+      </if>
+      <if test="type != null ">
+         and `omment`.type = #{type}
+      </if>
+      <if test="hot != null ">
+          and `comment`.is_hot_comment = #{hot}
+      </if>
+      <if test="reply != null and reply ==0">
+        and comment2.id is  null
+      </if>
+      <if test="reply != null and reply ==1">
+        and comment2.id is not null
+      </if>
+      <if test="beginTime!=null">
+          and `comment`.create_time&gt;=#{beginTime}
+      </if>
+      <if test="endTime!=null">
+          and `comment`.create_time&lt;=#{endTime}
+      </if>
+    <if test="sort != null">
+      order by ${sort} ${order}
+    </if>
+    <if test="sort == null">
+      order by  `comment`.create_time desc
+    </if>
+  </select>
+</mapper>

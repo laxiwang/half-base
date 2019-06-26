@@ -1,0 +1,18 @@
+@layout("/common/_container.html"){
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <div class="form-horizontal" id="">
+            <div class="row">
+                <input type="file" id="fileUp">
+            </div>
+        </div>
+        <div class="row btn-group-m-t">
+            <div class="col-sm-10">
+                <#button btnCss="danger" name="取消" id="cancel" icon="fa-eraser" clickFun="Fileinfo.close()"/>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script src="${ctxPath}/static/modular/system/file/file_info.js"></script>
+@}

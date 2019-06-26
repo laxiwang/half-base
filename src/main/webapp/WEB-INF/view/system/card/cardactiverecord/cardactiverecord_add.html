@@ -1,0 +1,31 @@
+@layout("/common/_container.html"){
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <div class="form-horizontal" id="CardActiveRecordInfo">
+            <div class="row">
+                <div class="col-sm-6 b-r">
+                		 <div style="font-weight: bold;">
+							<p>1.实体卡需激活才可使用</p>
+							<p>2.激活后不可撤销，请确认无误后再进行激活</p>
+							<p>3.激活后的实体卡不可划拨</p>
+							<p>4.实体卡有效期为三年，激活后使用有效期为一年</p>
+                		 </div>
+                    <#input id="cardNoStart" name="开始编号" underline="true"/>
+                    <#input id="cardNoEnd" name="结束编号" underline="true"/>
+                    <#input id="remark" name="备注"  underline="true"/>
+                </div>
+            </div>
+
+            
+            <div class="row btn-group-m-t">
+                <div class="col-sm-10">
+                    <#button btnCss="info" name="提交" id="ensure" icon="fa-check" clickFun="CardActiveRecordInfo.addSubmit()"/>
+                    <#button btnCss="danger" name="取消" id="cancel" icon="fa-eraser" clickFun="CardActiveRecordInfo.close()"/>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/system/card/cardactiverecord/cardactiverecord_info.js"></script>
+@}

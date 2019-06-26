@@ -1,0 +1,37 @@
+@layout("/common/_container.html"){
+<style>
+#search .control-label{
+	width:100px
+}
+</style>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>实体卡使用记录</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row">
+                        <div class="row">
+                            <div class="col-lg-3 col-sm-3">
+                                <#NameCon  id="phone" name="手机号"  />
+                            </div>
+                            <div class="col-lg-3 col-sm-3">
+                                <#NameCon  id="cardNoStart" name="开始编号"  />
+                            </div>
+                            <div class="col-lg-3 col-sm-3">
+                                <#NameCon id="cardNoEnd" name="结束编号"/>
+                            </div>
+                            <div class="col-lg-3 col-sm-3">
+                                <#button name="搜索" icon="fa-search" clickFun="CardUse.search()"/>
+                                <#button name="重置" icon="fa-trash" clickFun="CardUse.resetSearch()" space="true"/>
+                            </div>
+                        </div>
+                    <#table id="CardUseTable" style=""/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/system/card/carduse.js"></script>
+@}

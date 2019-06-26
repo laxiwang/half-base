@@ -1,0 +1,28 @@
+@layout("/common/_container.html"){
+<div class="ibox-content">
+    <div class="row">
+        <div class="col-lg-3 col-sm-3">
+            <#TimeCon id="beginTime" name="开始日期" isTime="false" pattern="YYYY-MM-DD" value=""/>
+        </div>
+        <div class="col-lg-3 col-sm-3">
+            <#TimeCon id="endTime" name="结束日期" isTime="false" pattern="YYYY-MM-DD" value=""/>
+        </div>
+        <div class="col-lg-3 col-sm-3">
+        </div>
+        <div class="col-lg-3 col-sm-3">
+            <#button name="搜索" icon="fa-search" clickFun="UserNewsEchartsDay.search()"/>
+            <#button name="重置" icon="fa-trash" clickFun="UserNewsEchartsDay.resetSearch()" space="true"/>
+        </div>
+    </div>
+    <div class="row">
+        <div id="userNews" style=""></div>
+    </div>
+</div>
+
+
+<script src="${ctxPath}/static/js/echarts/echarts.js"></script>
+<script src="${ctxPath}/static/modular/system/echarts/usernewsechartsday.js"></script>
+<script>
+
+</script>
+@}

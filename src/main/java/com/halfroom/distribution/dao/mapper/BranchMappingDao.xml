@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.halfroom.distribution.dao.BranchMappingDao">
+  <resultMap id="BaseResultMap" type="com.halfroom.distribution.persistence.model.ProvinceCityBranchMapping">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="province" jdbcType="VARCHAR" property="province" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="branch_sale_id" jdbcType="INTEGER" property="branchSaleId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, province, city, branch_sale_id
+  </sql>
+    <select id="list" resultType="map">
+      select  m.id as mappingId, province , city ,b.fullname as fullName from province_city_branch_mapping m
+      inner join branchsaler b on  m.branch_sale_id = b.id
+      <if test="condition != null and condition != ''">
+      and ( b.fullname like CONCAT('%',#{condition},'%')
+      or m.province like CONCAT('%',#{condition},'%')
+      or m.city like CONCAT('%',#{condition},'%') )
+      </if>
+    </select>
+</mapper>

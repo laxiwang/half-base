@@ -1,0 +1,39 @@
+@layout("/common/_container.html"){
+<div class="row">
+    <div class="col-sm-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>下级分会订单统计--------<span style="color:red">当前数据较多请耐心等待,总计在最后一条,点击第一条数据的   v 符号即可</span></h5>
+            </div>
+            <div class="ibox-content">
+                    <div class="row">
+                        <div class="row">
+                            <div class="col-lg-3 col-sm-3">
+                                <#NameCon id="condition" name="条件" placeholder="分会名称" />
+                            </div>
+                            <div class="col-lg-3 col-sm-3">
+                                <#TimeCon id="beginTime" name="开始日期" isTime="false" pattern="YYYY-MM-DD" value=""/>
+                            </div>
+                            <div class="col-lg-3 col-sm-3">
+                                <#TimeCon id="endTime" name="结束日期" isTime="false" pattern="YYYY-MM-DD" value=""/>
+                            </div>
+                            <div class="col-lg-3 col-sm-3">
+                                <#button name="搜索" icon="fa-search" clickFun="AgentOrder.search()"/>
+                                <#button name="重置" icon="fa-trash" clickFun="AgentOrder.resetSearch()" space="true"/>
+                            </div>
+                        </div>
+                        <div class="row row-lg move-workBtn" style="margin-bottom: 40px;">
+                            <div class="col-lg-12 col-sm-12">
+                            @if(shiro.hasPermission("/agentOrder/exportList")){
+                            <#button name="导出表格" icon="fa-bar-chart" clickFun="AgentOrder.exportList()"/>
+                            @}
+                            </div>
+                        </div>
+                        <#table id="AgentOrderTable" style="min-width:1500px;"/>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/system/dept/agent/agent_order.js"></script>
+@}

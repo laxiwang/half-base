@@ -1,0 +1,71 @@
+@layout("/common/_container.html"){
+<div class="ibox float-e-margins">
+	<div class="ibox-title">
+		<h5>用户状态</h5>
+	</div>
+	<div class="ibox-content">
+		<div class="form-horizontal" style="margin-left: 100px;">
+			<div class="row">
+				<div class="col-sm-8">
+				        <#input  id="count" name="注册用户" underline="true"  readonly="true" />
+						<#input  id="fullmembers" name="正式用户数" underline="true"  readonly="true" />
+						<#input  id="sup" name="体验中用户数" underline="true"  readonly="true" />
+						<#input  id="suped" name="体验过期用户数" underline="true"  readonly="true" />
+						
+				</div>
+		
+			</div>
+			<hr/>
+			 <div  class="row">
+						  	<span style="font-weight: bold;margin-left:40px;"> 注册用户=正式用户+体验中用户+体验过期用户</span>
+				        	<span style="font-weight: bold;margin-left:40px;"> 正式用户=赠卡用户+线上支付+实体卡支付用户+积分兑换用户+知识送礼用户</span>
+		   </div>
+		      <br/>
+			<div class="row">
+				
+		       <div class="col-sm-8">
+					    <#input  id="cardGiving" name="赠卡用户数" underline="true"  readonly="true" />
+					    <#input  id="paid" name="线上支付用户数" underline="true"  readonly="true" />
+				        <#input  id="cardPay" name="实体卡支付用户数" underline="true"  readonly="true" />
+						<#input  id="exchange" name="积分兑换用户数" underline="true"  readonly="true" />
+						<#input  id="giftGiving" name="知识送礼用户数" underline="true"  readonly="true" />
+				</div>
+			</div>
+			<hr/>
+			 <div  class="row">
+				        	<span style="font-weight: bold;margin-left:95px;font-size: 18px;"> 课程</span><span style="font-weight: bold;margin-left:40px;font-size: 18px;"> 人数</span>
+		      </div>
+			<div class="row bookName1">
+				
+				<div class="col-sm-8" >
+				<#input  id="bookName1"  name="" underline="true"  readonly="true" />
+				
+				</div>
+			</div>
+			<div class="row bookName2" >
+				<div class="col-sm-8" >
+				<#input  id="bookName2" name=""  underline="true"  readonly="true" />
+				</div>
+			</div>
+			<div class="row bookName3" >
+				<div class="col-sm-8" >
+				<#input  id="bookName3" name=""  underline="true"  readonly="true" />
+				</div>
+			</div>
+			<div class="row bookName4" >
+				<div class="col-sm-8" >
+					<#input  id="bookName4" name=""  underline="true"  readonly="true" />
+				</div>
+			</div>
+
+			<div class="row bookName5" >
+				<div class="col-sm-8" >
+					<#input  id="bookName5" name=""  underline="true"  readonly="true" />
+				</div>
+			</div>
+		</div>
+
+	</div>
+</div>
+<script src="${ctxPath}/static/modular/system/generaluser/userstatus.js"></script>
+@}

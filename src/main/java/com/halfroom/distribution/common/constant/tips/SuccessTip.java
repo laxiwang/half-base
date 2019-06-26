@@ -1,0 +1,12 @@
+package com.halfroom.distribution.common.constant.tips;
+
+/**
+ * 返回给前台的成功提示
+ */
+public class SuccessTip extends AbstractTip {
+	
+	public SuccessTip(){
+		super.code = 200;
+		super.message = "操作成功";
+	}
+}

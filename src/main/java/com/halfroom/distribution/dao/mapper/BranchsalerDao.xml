@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.halfroom.distribution.dao.BranchsalerDao">
+
+	<select id="tree" resultType="com.halfroom.distribution.common.node.ZTreeNode">
+		select b1.id,b1.pid as pId,b1.simplename as name,
+			CASE	WHEN ( b1.pId = 0 OR b1.pId IS NULL) THEN 'true'	ELSE 'false'	END  as isOpen ,
+			CASE	WHEN  b2.id is not null THEN 1  ELSE 2  END as haslow
+		from branchsaler b1
+		left join branchsaler b2 on b1.id=b2.pid
+		where b1.status=0
+		GROUP BY	b1.id
+		ORDER BY b1.level,haslow,b1.id
+
+	</select>
+		<select id="treeByBranchsaler" resultType="com.halfroom.distribution.common.node.ZTreeNode">
+		select b1.id,b1.pid as pId,b1.simplename as name,
+			CASE	WHEN ( b1.pId = 0 OR b1.pId IS NULL) THEN 'true'	ELSE 'false'	END  as isOpen ,
+			CASE	WHEN  b2.id is not null THEN 1  ELSE 2  END as haslow
+		from branchsaler b1
+		left join branchsaler b2 on b1.id=b2.pid
+		where 	b1.pids like  CONCAT('%[',#{branchsalerid},']%') or b1.id=#{branchsalerid} and b1.status=0
+		GROUP BY	b1.id
+		ORDER BY b1.level,haslow,b1.id
+
+	</select>
+		<select id="treeByBranchsalerNoSelf" resultType="com.halfroom.distribution.common.node.ZTreeNode">
+			select b1.id,b1.pid as pId,b1.simplename as name,
+			CASE	WHEN ( b1.pId = 0 OR b1.pId IS NULL) THEN 'true'	ELSE 'false'	END  as isOpen ,
+			CASE	WHEN  b2.id is not null THEN 1  ELSE 2  END as haslow
+		from branchsaler b1
+		left join branchsaler b2 on b1.id=b2.pid
+		where 	b1.pids like  CONCAT('%[',#{branchsalerid},']%')  and b1.status=0
+		GROUP BY	b1.id
+		ORDER BY b1.level,haslow,b1.id
+	</select>
+
+	<select id="list" resultType="map">
+		select b1.id as id ,b1.num as num,b1.pid as pid,b1.pids as pids,b1.simplename as simplename,b1.fullname as fullname,b1.tips as tips,b1.version as version,b1.phone as phone,b1.username as username ,b1.level as level,b1.status as status,
+			CASE WHEN b1.level=0 THEN '总会'
+			WHEN b1.level=1 THEN '省级分会'
+			WHEN b1.level=2 THEN '市级分会'
+			WHEN b1.level=3 THEN '区县级分会'
+			WHEN b1.level=4 THEN '小渠道'
+			ELSE '级别异常'
+			end  as levelName,
+			CASE	WHEN  b2.id is not null THEN 1  ELSE 2  END as haslow
+			from branchsaler b1
+			left join branchsaler b2 on b1.id=b2.pid
+			where 1=1 and b1.status=0
+			<if test="condition != null and condition != ''">
+				and  b1.simplename like CONCAT('%',#{condition},'%') or b1.fullname like CONCAT('%',#{condition},'%')
+			</if>
+		GROUP BY	b1.id
+		ORDER BY level,haslow,id
+	</select>
+
+
+	<select id="activityBranchSalerList" resultType="map">
+		select *,
+		CASE WHEN level=0 THEN '总会'
+		WHEN level=1 THEN '省级分会'
+		WHEN level=2 THEN '市级分会'
+		WHEN level=3 THEN '区县级分会'
+		WHEN level=4 THEN '小渠道'
+		ELSE '级别异常'
+		end  as levelName
+		from branchsaler
+		where 1=1 and status=0
+		<if test="condition != null and condition != ''">
+			and  simplename like CONCAT('%',#{condition},'%') or fullname like CONCAT('%',#{condition},'%')
+		</if>
+		<if test="level != null ">
+			and  level = #{level}
+		</if>
+		order by level,id
+	</select>
+	<select id="agentlist" resultType="map">
+		select b1.id as id ,b1.num as num,b1.pid as pid,b1.pids as pids,b1.simplename as simplename,b1.fullname as fullname,b1.tips as tips,b1.version as version,b1.phone as phone,b1.username as username ,b1.level as level,b1.status as status,
+		CASE WHEN b1.level=0 THEN '总会'
+		     WHEN b1.level=1 THEN '省级分会'
+		     WHEN b1.level=2 THEN '市级分会'
+		     WHEN b1.level=3 THEN '区县级分会'
+		     WHEN b1.level=4 THEN '小渠道'
+		ELSE '级别异常'   
+		end  as levelName ,
+
+		CASE	WHEN  b2.id is not null THEN 1  ELSE 2  END as haslow
+		from branchsaler b1
+
+		left join branchsaler b2 on b1.id=b2.pid
+		where 1=1 and b1.status=0
+		<if test="condition != null and condition != ''">
+		and  b1.simplename like CONCAT('%',#{condition},'%') or b1.fullname like CONCAT('%',#{condition},'%')
+		</if>
+		and  (b1.id=#{branchsaler} or b1.pids like  CONCAT('%[',#{branchsaler},']%') )
+		GROUP BY	b1.id
+		ORDER BY b1.level,haslow,b1.id
+	</select>
+	
+	<select id="AgentBranchSalerNum" resultType="java.lang.Integer">
+		select count(1) from branchsaler b
+		where 1=1 and b.status=0
+		<if test="level != null">
+			and  b.level =#{level}
+		</if>
+		<if test="beginTime!=null">
+			and b.id in(select branchsalerid from admin_user where createtime&gt;=#{beginTime})
+		</if>
+		<if test="endTime!=null">
+			and b.id in(select branchsalerid from admin_user where createtime&lt;=#{endTime})
+		</if>
+		and  (b.pids like  CONCAT('%[',#{branchsaler},']%') )
+	</select>
+</mapper>

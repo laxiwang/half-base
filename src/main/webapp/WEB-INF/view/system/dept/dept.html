@@ -1,0 +1,43 @@
+@layout("/common/_container.html"){
+<div class="row">
+    <div class="col-sm-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>分会管理</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row ">
+                    <div class="row">
+                        <div class="col-lg-3 col-sm-3">
+                            <#NameCon id="condition" name="名称" />
+                        </div>
+                        <div class="col-lg-3 col-sm-3">
+                        </div>
+                        <div class="col-lg-3 col-sm-3">
+                        </div>
+                        <div class="col-lg-3 col-sm-3">
+                            <#button name="搜索" icon="fa-search" clickFun="Dept.search()"/>
+                            <#button name="重置" icon="fa-trash" clickFun="Dept.resetSearch()" space="true"/>
+                        </div>
+                    </div>
+                    <div class="row row-lg move-workBtn" style="margin-bottom: 40px;">
+                        <div class="col-lg-12 col-sm-12">
+                            @if(shiro.hasPermission("/dept/add")){
+                            <#button name="添加" icon="fa-plus" clickFun="Dept.openAddDept()"/>
+                            @}
+                            @if(shiro.hasPermission("/dept/update")){
+                            <#button name="修改" icon="fa-edit" clickFun="Dept.openDeptDetail()" space="true"/>
+                            @}
+                            @if(shiro.hasPermission("/dept/delete")){
+                            <#button  btnCss="danger" name="删除" icon="fa-remove"  clickFun="Dept.delete()" space="true"/>
+                            @}
+                         </div>
+                    </div>
+                    <#table id="DeptTable" style=""/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/system/dept/dept.js"></script>
+@}

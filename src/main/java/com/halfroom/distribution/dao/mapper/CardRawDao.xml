@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.halfroom.distribution.dao.CardRawDao">
+	<resultMap id="BaseResultMap"
+		type="com.halfroom.distribution.persistence.model.CardRaw">
+		<result column="card_no" jdbcType="INTEGER" property="cardNo" />
+		<result column="card_code" jdbcType="VARCHAR" property="cardCode" />
+		<result column="fee" jdbcType="DOUBLE" property="fee" />
+	</resultMap>
+	<insert id="insertListSelective">
+		insert into card_raw(card_no, card_code,fee,type) values
+		<foreach collection="cardRaws" item="cardRaw" separator=",">
+			(#{cardRaw.cardNo}, #{cardRaw.cardCode},#{cardRaw.fee},#{cardRaw.type})
+		</foreach>
+	</insert>
+	<select id="countCardRaw" resultType="Integer">
+		select count(*) from card_raw
+		<where>
+			<if test="cardNoStart != null">
+				card_no &gt;= #{cardNoStart}
+			</if>
+			<if test="cardNoEnd != null">
+				and card_no &lt;= #{cardNoEnd}
+			</if>
+		</where>
+	</select>
+	
+		<delete id="deleteCardRawRange">
+		delete from card_raw 
+		<where> 
+		   <if test="cardNoStart != null">
+				card_no &gt;= #{cardNoStart}
+			</if>
+			<if test="cardNoEnd != null">
+				and card_no &lt;= #{cardNoEnd}
+			</if>
+	  	</where>
+	</delete>
+	
+	  	<select id="cardRawListRange" resultType="com.halfroom.distribution.persistence.model.CardRaw">
+	  	select * from card_raw
+	  	<where> 
+		      <if test="cardNoStart != null">
+				card_no &gt;= #{cardNoStart}
+			</if>
+			<if test="cardNoEnd != null">
+				and card_no &lt;= #{cardNoEnd}
+			</if>
+	  	</where>
+	  	order by card_no asc
+  	</select>
+</mapper>

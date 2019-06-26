@@ -1,0 +1,64 @@
+@layout("/common/_container.html"){
+<div class="ibox float-e-margins">
+	<div class="ibox-content">
+		<div class="form-horizontal" id="userInfoForm">
+			<input type="hidden" id="id" value="${user.id}">
+			<input type="hidden" id="sexValue" value="${user.gender}">
+			<div class="row">
+				<div class="col-sm-6 b-r">
+					<#input  id="name" name="姓名" underline="true" value="${user.name}"/>
+					<#select id="gender" name="性别" underline="true">
+						<option value="男" 
+							@if(user.gender=='男'){
+							selected="true"  
+											@}
+						>男
+					</option>
+						<option value="女"
+						@if(user.gender=='女'){
+							selected="true"  
+											@}
+						>女</option>
+					</#select>
+					
+					<#input  id="" name="角色" underline="true"  value="${roleName}" readonly="true"/>
+			
+								
+					 <#input id="pName" name="所属分会" readonly="readonly" hidden="branchsaler"  hiddenValue="${user.branchsaler}" value="${deptName}"
+                            clickFun="UserInfoDlg.showDeptSelectTree(); return false;"
+                            style="background-color: #ffffff !important;" underline="true"/>
+					  <!-- 父级分会的选择框 -->
+		            <div id="parentDeptMenu" class="menuContent"
+		                 style="display: none; position: absolute; z-index: 200;">
+		                <ul id="parentDeptMenuTree" class="ztree tree-box" style="width: 245px !important;"></ul>
+		            </div>
+		                                     	 <#select id="book" name="课程" >
+		                                     	  @for(book in books){
+		                                     	  <option value="${book.id}">${book.name}</option>
+		                                     	  @}
+												</#select>
+		            <#button btnCss="info" name="开通会员" id="ensure" icon="fa-check" clickFun="UserInfoDlg.openMember()"/>
+				    <#input  id="integral" name="积分" /><#button btnCss="info" name="增加积分" id="ensure" icon="fa-check" clickFun="UserInfoDlg.addintegralForUser()"/>
+				</div>
+				<div class="col-sm-6">
+					<div id="driverInfoContent">
+							<#input  id="phone" name="电话" value="${user.phone}" underline="true"   readonly="readonly"/>
+							<#input  id="province" name="省" underline="true" value="${user.province}"/>
+							<#input  id="city" name="市" underline="true" value="${user.city}"/>
+							<#input  id="birthday" name="出生日期" underline="true" type="text" value="${user.birthday}" clickFun="laydate({istime: false, format: 'YYYY-MM-DD'})" />
+					</div>
+				</div>
+			</div>
+
+			<div class="row btn-group-m-t">
+				<div class="col-sm-10">
+					<#button btnCss="info" name="提交" id="ensure" icon="fa-check" clickFun="UserInfoDlg.editSubmit()"/>
+					<#button btnCss="danger" name="取消" id="cancel" icon="fa-eraser" clickFun="UserInfoDlg.close()"/>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</div>
+<script src="${ctxPath}/static/modular/system/generaluser/generaluser_info.js"></script>
+@}

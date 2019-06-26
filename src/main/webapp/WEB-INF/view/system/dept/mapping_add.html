@@ -1,0 +1,36 @@
+@layout("/common/_container.html"){
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <div class="form-horizontal" id="deptInfoData">
+            <input type="hidden" id="id" value="">
+
+            <div class="row">
+                <div class="col-sm-9 b-r">
+                    <#input id="province" name="省" underline="true"/>
+
+                    <#input id="city" name="市" underline="true"/>
+                    <#input id="pName" name="分会" readonly="readonly" hidden="pid"
+                    clickFun="MappingInfo.showDeptSelectTree(); return false;"
+                    style="background-color: #ffffff !important;" underline="true"/>
+                </div>
+
+            </div>
+
+        <!-- 父级分会的选择框 -->
+        <div id="parentDeptMenu" class="menuContent"
+             style="display: none; position: absolute; z-index: 200;">
+            <ul id="parentDeptMenuTree" class="ztree tree-box" style="width: 245px !important;"></ul>
+        </div>
+
+        <div class="row btn-group-m-t">
+            <div class="col-sm-10">
+                <#button btnCss="info" name="提交" id="ensure" icon="fa-check" clickFun="MappingInfo.addSubmit()"/>
+                <#button btnCss="danger" name="取消" id="cancel" icon="fa-eraser" clickFun="MappingInfo.close()"/>
+            </div>
+        </div>
+    </div>
+
+</div>
+</div>
+<script src="${ctxPath}/static/modular/system/dept/mapping_info.js"></script>
+@}

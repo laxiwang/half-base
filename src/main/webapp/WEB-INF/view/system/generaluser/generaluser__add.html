@@ -1,0 +1,56 @@
+@layout("/common/_container.html"){
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <div class="form-horizontal" id="userInfoForm">
+
+            <div class="row">
+                <div class="col-sm-6 b-r">
+                    <#input id="name" name="姓名" underline="true"/>
+                    <#select id="gender" name="性别" underline="true">
+						<option value="男">男</option>
+						<option value="女">女</option>
+					</#select>
+					 <#select id="role" name="角色" underline="true">
+						<option value="0"  selected='true'>推广</option>
+						<option value="1"  >销售</option>
+					</#select>
+					 <#select id="memberstatus" name="状态" underline="true">
+						<option value="0"  selected='true'>体验用户</option>
+						<option value="1"  >正式用户</option>
+					</#select>
+
+                </div>
+                <div class="col-sm-6">
+                   	<div id="driverInfoContent">
+							<#input  id="phone" name="电话"  underline="true" />
+<!--							<#input  id="province" name="省" underline="true" />
+							<#input  id="city" name="市" underline="true" />-->
+							<#input  id="birthday" name="出生日期" underline="true" type="text"
+								clickFun="laydate({istime: false, format: 'YYYY-MM-DD'})" />
+                        <#input id="pName" name="所属分会" readonly="readonly" hidden="branchsaler"
+                        clickFun="UserInfoDlg.showDeptSelectTree(); return false;"
+                        style="background-color: #ffffff !important;" underline="true"/>
+					</div>
+                   
+                </div>
+                
+            </div>
+
+            <!-- 父级分会的选择框 -->
+            <div id="parentDeptMenu" class="menuContent"
+                 style="display: none; position: absolute; z-index: 200;">
+                <ul id="parentDeptMenuTree" class="ztree tree-box" style="width: 245px !important;"></ul>
+            </div>
+
+            <div class="row btn-group-m-t">
+                <div class="col-sm-10">
+                    <#button btnCss="info" name="提交" id="ensure" icon="fa-check" clickFun="UserInfoDlg.add()"/>
+                    <#button btnCss="danger" name="取消" id="cancel" icon="fa-eraser" clickFun="UserInfoDlg.close()"/>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/system/generaluser/generaluser_info.js"></script>
+@}

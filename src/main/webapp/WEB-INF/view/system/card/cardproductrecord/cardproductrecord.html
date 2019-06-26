@@ -1,0 +1,50 @@
+@layout("/common/_container.html"){
+<div class="row">
+    <div class="col-sm-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>生产记录</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row">
+                    <div class="row">
+                        <div class="col-lg-3 col-sm-3">
+                            <#TimeCon id="beginTime" name="开始日期" isTime="false" pattern="YYYY-MM-DD"/>
+                        </div>
+                        <div class="col-lg-3 col-sm-3">
+                            <#TimeCon id="endTime" name="结束日期" isTime="false" pattern="YYYY-MM-DD "/>
+                        </div>
+                        <div class="col-lg-3 col-sm-3">
+                        </div>
+                        <div class="col-lg-3 col-sm-3">
+                            <#button name="搜索" icon="fa-search" clickFun="CardProductRecord.search()"  space="true"/>
+                            <#button name="重置" icon="fa-trash" clickFun="CardProductRecord.resetSearch()" space="true"/>
+                        </div>
+                    </div>
+                    <div class="row row-lg move-workBtn">
+                        <div class="col-lg-12 col-sm-12">
+                            @if(shiro.hasPermission("/cardProductRecord/add")){
+                            <#button name="添加生产记录" icon="fa-plus" clickFun="CardProductRecord.openAddCardProductRecord()"/>
+                            @}
+                            @if(shiro.hasPermission("/cardProductRecord/put")){
+                            <#button name="投放" icon="fa-paper-plane" clickFun="CardProductRecord.puton()" space="true"/>
+                            @}
+                            @if(shiro.hasPermission("/cardProductRecord/exportExcel")){
+                            <#button name="导出表格" icon="fa-bar-chart" clickFun="CardProductRecord.exportExcel()" space="true"/>
+                            @}
+                            @if(shiro.hasPermission("/cardProductRecord/exportPicture")){
+                            <#button name="导出二维码" icon="fa-picture-o" clickFun="CardProductRecord.exportPicture()" space="true"/>
+                            @}
+                            @if(shiro.hasPermission("/cardProductRecord/delete")){
+                            <#button name="删除"  btnCss="danger" icon="fa-trash-o" clickFun="CardProductRecord.delete()" space="true"/>
+                            @}
+                        </div>
+                    </div>
+                    <#table id="CardProductRecord" style=""/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/system/card/cardproductrecord/cardproductrecord.js"></script>
+@}

@@ -1,0 +1,31 @@
+@layout("/common/_container.html"){
+<div class="ibox float-e-margins">
+	<div class="ibox-title">
+		<h5>订单统计</h5>
+	</div>
+	<div class="ibox-content">
+		<div class="form-horizontal" style="margin-left: 100px;">
+			<div class="row">
+				 <div  class="row">
+				        	<span style="font-weight: bold;margin-left:80px;font-size: 18px;"> 支付方式</span><span style="font-weight: bold;margin-left:30px;font-size: 18px;"> 订单数</span>
+		     	 </div>
+				<div class="col-sm-8">
+
+						<#input  id="tuiguang" name="推广大使" underline="true"  readonly="true" />
+						<#input  id="xiaoshou" name="销售大使" underline="true"  readonly="true" />
+						<#input  id="give" name="知识送礼" underline="true"  readonly="true" />
+						<#input  id="h51" name="公众号" underline="true"  readonly="true" />
+						<#input  id="ios" name="ios" underline="true"  readonly="true" />
+						<#input  id="android" name="android" underline="true"  readonly="true" />
+						<#input  id="card" name="实体卡" underline="true"  readonly="true" />、
+						<#input  id="sum" name="总计" underline="true"  readonly="true" />
+				</div>
+		
+			</div>
+			
+		</div>
+
+	</div>
+</div>
+<script src="${ctxPath}/static/modular/system/userorder/orderstatistics.js"></script>
+@}

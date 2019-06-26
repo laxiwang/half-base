@@ -1,0 +1,33 @@
+@layout("/common/_container.html"){
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <div class="form-horizontal" id="CardWholeSaleInfo">
+            <div class="row">
+                <div class="col-sm-6 b-r">
+                         <!-- 父级分会的选择框 -->
+                	 <div id="parentDeptMenu" class="menuContent"
+		                 style="display: none; position: absolute; z-index: 200;">
+		                <ul id="parentDeptMenuTree" class="ztree tree-box" style="width: 245px !important;"></ul>
+		             </div>
+                	<#input id="pName" name="划拨分会" readonly="readonly" hidden="branchsaler" 
+                            clickFun="CardWholeSaleInfo.showDeptSelectTree(); return false;"
+                            style="background-color: #ffffff !important;" underline="true"/>
+                    <#input id="cardNoStart" name="开始编号" underline="true"/>
+
+                    <#input id="cardNoEnd" name="结束编号" underline="true"/>
+				
+                    <#input id="remark" name="备注"  underline="true"/>
+                </div>
+            </div>
+            <div class="row btn-group-m-t">
+                <div class="col-sm-10">
+                    <#button btnCss="info" name="提交" id="ensure" icon="fa-check" clickFun="CardWholeSaleInfo.addSubmit()"/>
+                    <#button btnCss="danger" name="取消" id="cancel" icon="fa-eraser" clickFun="CardWholeSaleInfo.close()"/>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/system/card/cardwholesale/cardwholesale_info.js"></script>
+@}

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.halfroom.distribution.dao.BranchsalerFileDao">
+  <resultMap id="BaseResultMap" type="com.halfroom.distribution.persistence.model.BranchsalerFile">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="file_name" jdbcType="VARCHAR" property="fileName" />
+    <result column="file_url" jdbcType="LONGVARCHAR" property="fileUrl" />
+    <result column="file_type" jdbcType="VARCHAR" property="fileType" />
+    <result column="file_role" jdbcType="INTEGER" property="fileRole" />
+    <result column="is_folder" jdbcType="INTEGER" property="isFolder" />
+    <result column="folder_id" jdbcType="INTEGER" property="folderId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, file_name, file_url, file_type, file_role, is_folder, folder_id, create_time, update_time
+  </sql>
+  <select  id="list" resultType="map">
+     	select
+       id,file_name as fileName,file_url as fileUrl,file_type as fileType, folder_id,is_folder,
+       CASE WHEN is_folder =0 THEN  CONCAT('文件','_',ifnull(file_type,''))  WHEN is_folder =1 THEN '文件夹' end   as isFolder,
+       CASE WHEN file_role=0 THEN '全部'  WHEN file_role=1 THEN '总部' WHEN file_role=2 THEN '省级' WHEN file_role=3 THEN '市级' WHEN file_role=4 THEN '区县' WHEN file_role=5 THEN '小渠道' END as role,
+       DATE_FORMAT(create_time,'%Y-%m-%d %H:%i:%s') as createTime
+       from branchsaler_file
+       where 1=1
+       <if test="condition != null and condition != ''">
+         and file_name like CONCAT('%',#{condition},'%')
+       </if>
+      <if test="folderId != null ">
+         and folder_id=#{folderId}
+      </if>
+      <if test="(condition == null or condition == '')  and folderId == null">
+          and folder_id is null
+      </if>
+      <if test="role != null  and role != 1">
+          and (file_role=0 or  file_role=#{role})
+      </if>
+
+  </select>
+</mapper>

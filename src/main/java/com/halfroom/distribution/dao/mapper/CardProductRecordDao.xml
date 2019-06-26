@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.halfroom.distribution.dao.CardProductRecordDao">
+  <resultMap id="BaseResultMap" type="com.halfroom.distribution.persistence.model.CardProductRecord">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="card_no_start" jdbcType="INTEGER" property="cardNoStart" />
+    <result column="card_no_end" jdbcType="INTEGER" property="cardNoEnd" />
+    <result column="fee" jdbcType="DOUBLE" property="fee" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="putontime" jdbcType="TIMESTAMP" property="putontime" />
+    <result column="exporttime" jdbcType="TIMESTAMP" property="exporttime" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, card_no_start, card_no_end, fee,type,remark, createtime, putontime, exporttime, status
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from card_product_record
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from card_product_record
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insertSelective" parameterType="com.halfroom.distribution.persistence.model.CardProductRecord">
+    insert into card_product_record
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="cardNoStart != null">
+        card_no_start,
+      </if>
+      <if test="cardNoEnd != null">
+        card_no_end,
+      </if>
+      <if test="fee != null">
+        fee,
+      </if>
+      <if test="fee != null">
+        type,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="createtime != null">
+        createtime,
+      </if>
+      <if test="putontime != null">
+        putontime,
+      </if>
+      <if test="exporttime != null">
+        exporttime,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="cardNoStart != null">
+        #{cardNoStart,jdbcType=INTEGER},
+      </if>
+      <if test="cardNoEnd != null">
+        #{cardNoEnd,jdbcType=INTEGER},
+      </if>
+      <if test="fee != null">
+        #{fee,jdbcType=DOUBLE},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="putontime != null">
+        #{putontime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="exporttime != null">
+        #{exporttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.halfroom.distribution.persistence.model.CardProductRecord">
+    update card_product_record
+    <set>
+      <if test="cardNoStart != null">
+        card_no_start = #{cardNoStart,jdbcType=INTEGER},
+      </if>
+      <if test="cardNoEnd != null">
+        card_no_end = #{cardNoEnd,jdbcType=INTEGER},
+      </if>
+       <if test="fee != null">
+        #{fee,jdbcType=DOUBLE},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        createtime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="putontime != null">
+        putontime = #{putontime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="exporttime != null">
+        exporttime = #{exporttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  	<select id="cardProductRecordsByTime" resultType="map">
+	  	select   id, 
+	  	concat(convert(card_no_start,char) ,' - - ',convert(card_no_end,char))  as cardNoRange,fee, remark,
+	  	DATE_FORMAT(createtime,'%Y-%m-%d %H:%i:%s') as  createtime ,DATE_FORMAT(putontime,'%Y-%m-%d %H:%i:%s') as putontime,
+	  	DATE_FORMAT(exporttime,'%Y-%m-%d %H:%i:%s') as exporttime, 
+	  	CASE WHEN  status=0 THEN '待投放'  WHEN  status=1 THEN '已投放' END  as status,
+	  	CASE WHEN  type=0 THEN '付费卡'  WHEN  type=1 THEN '半月卡' END  as type
+	  	 from card_product_record
+	  	<where> 
+		    <if test="beginTime != null">
+		        createtime &gt;= #{beginTime}
+		    </if>
+		    <if test="endTime != null">
+		        and createtime &lt;= #{endTime}
+		    </if>
+	  	</where>
+	  	order by createtime desc 
+  	</select>
+</mapper>

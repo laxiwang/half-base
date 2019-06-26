@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.halfroom.distribution.dao.BookDao">
+	<select id="selectPartVideos" resultType="map">
+		select b.name as	bName,p.name as pName,p.vip_url as res,p.book_id as pid ,p.id as id from book_chapter_part p
+		left join book b on p.book_id=b.id
+		where	1=1 and b.status=2 and p.status=0 and p.type=1
+		<if test="condition != null and condition != ''">
+			and b.name like  CONCAT('%',#{condition},'%')
+		</if>
+		order by b.create_time  ,b.name
+	</select>
+	<update id="updateCommentHot">
+		update book_chapter_part_comment set is_hot_comment=#{host}
+		where id=#{id}
+	</update>
+	<select id="selectResById" resultType="java.lang.String">
+		select t.vip_url  from book_chapter_part t  where t.status=0 and t.id=#{id}
+	</select>
+
+</mapper>

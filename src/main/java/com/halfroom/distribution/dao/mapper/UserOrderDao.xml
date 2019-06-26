@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.halfroom.distribution.dao.UserOrderDao">
+
+	<sql id="Base_Column_List">
+		id, orderno, userid, bookid, fee, state, paysource, type,
+		createtime,
+		updatetime,
+		payrole, introducerid,branchsaler_id
+	</sql>
+	<select id="selectOrders" resultType="map">
+		select uo.id as uoid ,u.name as userName, b.name as bookName,b.price	as	orderFee ,u.phone,
+		case when uo.state=0 then '待支付' when uo.state=1 then '已支付' else '未知' end as orderState,
+		case when uo.paysource=0 then '公众号' when uo.paysource=1 then 'ios'  	when uo.paysource=2 then 	'android' when uo.paysource=3 then '实体卡' 	ELSE '未知' end as	paySource,
+		case when uo.payrole=0 then '推广大使' when uo.payrole=1 then	'销售大使' when uo.payrole=2 then '自然流量 ' when uo.payrole=3 then '知识送礼'	else '自然流量 '	end as payRole,
+		DATE_FORMAT(uo.createtime,'%Y-%m-%d %H:%i:%s') as saveOrderTime,
+		DATE_FORMAT(uo.updatetime,'%Y-%m-%d %H:%i:%s') as payTime,
+		uo.userid as userId, uo.orderno as orderNo,inu.name as inName,b2.fullname as branchsalerName,
+		CASE WHEN level=0 THEN '总会' WHEN level=1 THEN '省级分会' WHEN level=2 THEN '市级分会' 	WHEN level=3 THEN '区县级分会' 	WHEN level=4 THEN '小渠道'	ELSE '级别异常'end  as levelName,
+		CASE WHEN b2.level in (0,1) THEN b2.simplename
+		WHEN  b2.level in (2,3,4)  THEN  (select simplename from  branchsaler where id =( select substring_index(substring_index(b2.pids,']', 3),'[', -1) ))
+		end as tempSimplename
+		from user_order uo
+		left join user u on uo.userid=u.id
+		left join book b on uo.bookid=b.id
+		left join user inu on uo.introducerid=inu.id
+		left join branchsaler b2 on b2.id=uo.branchsaler_id
+		where 1=1 	and uo.state = 1
+		<if test="condition != null and condition != ''">
+			and ( u.name like CONCAT('%',#{condition},'%')
+			or uo.orderno like CONCAT(#{condition},'%')
+			or u.phone like CONCAT(#{condition},'%')
+			or inu.phone like CONCAT(#{condition},'%')
+			or inu.name like CONCAT(#{condition},'%')
+			)
+		</if>
+		<if test="branchsaler != null">
+			and uo.branchsaler_id =#{branchsaler}
+		</if>
+		<if test="payrole != null ">
+			and uo.payrole =#{payrole}
+		</if>
+		<if test="paysource != null ">
+			and uo.paysource =#{paysource}
+		</if>
+		<if test="inUserid != null ">
+			and inu.id =#{inUserid}
+		</if>
+		<if test="beginTime!=null">
+			and uo.createTime&gt;=#{beginTime}
+		</if>
+		<if test="endTime!=null">
+			and uo.createTime&lt;=#{endTime}
+		</if>
+	
+		order by uo.createtime desc
+	</select>
+	<select id="selectOrderNumBycity" resultType="Integer">
+		select count(*) from user_order uo
+		left join user u on u.id=uo.userid
+		where uo.state=1 
+		<if test="paysource != null">
+			and uo.paysource = #{paysource}
+		</if>
+		<if test="city != null">
+			and u.city=#{city}
+		</if>
+		<if test="branchsaler != null">
+			and uo.branchsaler_id =#{branchsaler}
+		</if>
+		group by u.city
+	</select>
+	<select id="selectCount" resultType="java.lang.Integer">
+		select count(*) from user_order uo
+		left join  user u on u.id=uo.userid 
+		left join branchsaler b on b.id=uo.branchsaler_id
+		where uo.state=1  
+		<if test="paysource != null">
+			and uo.paysource = #{paysource}
+		</if>
+		<if test="payrole != null">
+			and uo.payrole = #{payrole}
+		</if>
+		<if test="flag != null and flag == false and branchsaler != null">
+			and b.id =#{branchsaler}
+		</if>
+		<if test="flag != null and flag == true and branchsaler != null">
+			and (b.id=#{branchsaler} or b.pids like  CONCAT('%[',#{branchsaler},']%') )
+		</if>
+		<if test="beginTime!=null">
+			and uo.createTime&gt;=#{beginTime}
+		</if>
+		<if test="endTime!=null">
+			and uo.createTime&lt;=#{endTime}
+		</if>
+	</select>
+
+	<select id="selectCountUser" resultType="map">
+		select uo.userid,count(1) from user_order uo
+		left join  user u on u.id=uo.userid
+		left join branchsaler b on b.id=uo.branchsaler_id
+		where uo.state=1
+		<if test="paysource != null">
+			and uo.paysource = #{paysource}
+		</if>
+		<if test="payrole != null">
+			and uo.payrole = #{payrole}
+		</if>
+		<if test="flag != null and flag == false and branchsaler != null">
+			and b.id =#{branchsaler}
+		</if>
+		<if test="flag != null and flag == true and branchsaler != null">
+			and (b.id=#{branchsaler} or b.pids like  CONCAT('%[',#{branchsaler},']%') )
+		</if>
+		<if test="beginTime!=null">
+			and uo.createTime&gt;=#{beginTime}
+		</if>
+		<if test="endTime!=null">
+			and uo.createTime&lt;=#{endTime}
+		</if>
+		group by  uo.userid
+	</select>
+	<select id="selectCityBybid" resultType="map">
+  	select u.city from 
+  	user_order uo 
+  	left join  user u on u.id=uo.userid
+  	where  uo.branchsaler_id = #{branchsaler} and uo.state=1 and u.city  is not null 
+  	group by u.city 
+  </select>
+
+	<select id="userRechargeRecordList" resultType="map">
+		select u.name userName,u.phone userPhone,b.fullname branchSalerName, r.recharge_point  as rechargePoint,
+		DATE_FORMAT(r.create_time,'%Y-%m-%d %H:%i:%s') as creatTime
+		from user_recharge_record  r
+		left join user u on u.id=r.user_id
+		left join branchsaler b on u.branchsaler=b.id
+		where 1=1 and r.status=1
+		<if test="condition != null and condition != ''">
+			and ( u.name like CONCAT('%',#{condition},'%')
+			     or u.phone like CONCAT(#{condition},'%')
+				 or b.fullname like CONCAT(#{condition},'%')
+			)
+		</if>
+		<if test="branchsaler != null">
+			and u.branchsaler =#{branchsaler}
+		</if>
+		<if test="beginTime!=null">
+			and r.create_time&gt;=#{beginTime}
+		</if>
+		<if test="endTime!=null">
+			and r.create_time&lt;=#{endTime}
+		</if>
+		order by r.create_time desc
+	</select>
+</mapper>

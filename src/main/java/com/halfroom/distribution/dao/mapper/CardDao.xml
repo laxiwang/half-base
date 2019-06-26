@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.halfroom.distribution.dao.CardDao">
+	<resultMap id="BaseResultMap"
+		type="com.halfroom.distribution.persistence.model.Card">
+		<id column="card_no" jdbcType="INTEGER" property="cardNo" />
+		<result column="card_code" jdbcType="VARCHAR" property="cardCode" />
+		<result column="fee" jdbcType="DOUBLE" property="fee" />
+		<result column="branchsaler_id" jdbcType="INTEGER" property="branchsalerId" />
+		<result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
+		<result column="updatetime" jdbcType="TIMESTAMP" property="updatetime" />
+		<result column="status" jdbcType="INTEGER" property="status" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		card_no, card_code, fee branchsaler_id, createtime, updatetime, status
+	</sql>
+	<select id="countCardOfBranch" resultType="Integer">
+		select count(*) from card
+		where 1=1
+		<if test="branchsaler != null">
+			and branchsaler_id = #{branchsaler}
+		</if>
+		<if test="status != null">
+			and status = #{status}
+		</if>
+		<if test="cardNoStart != null">
+			and card_no &gt;= #{cardNoStart}
+		</if>
+		<if test="cardNoEnd != null">
+			and card_no &lt;= #{cardNoEnd}
+		</if>
+	</select>
+	<insert id="insertListSelective">
+		insert into card(card_no, card_code,fee,type,branchsaler_id,createtime,
+		status) values
+		<foreach collection="cardRaws" item="cardRaw" separator=",">
+			(#{cardRaw.cardNo},#{cardRaw.cardCode},#{cardRaw.fee},#{cardRaw.type},1,now(), 0)
+		</foreach>
+	</insert>
+	<update id="batchUpdateCardBranch">
+		update card set branchsaler_id = #{branchsaler}
+		where card_no in (
+		<foreach collection="cardNos" item="cardNo" separator=",">
+			#{cardNo} </foreach>
+		)
+	</update>
+	<update id="batchUpdateCardStatus">
+		update card set status = #{status}
+		where card_no in (
+		<foreach collection="cardNos" item="cardNo" separator=",">
+			#{cardNo} </foreach>
+		)
+	</update>
+	<select id="cardList" resultType="map">
+		select  c.card_no as card_no,c.fee as fee,
+		CASE WHEN c.status =0 then '未激活'	WHEN c.status =1 then '已激活' WHEN c.status =2 then '已使用'	end as status ,
+		CASE WHEN  c.type=0 THEN '付费卡'  WHEN  c.type=1 THEN '半月卡' END  as type,
+		CASE WHEN  uuse.uphone is null THEN uo.uphone WHEN  uo.uphone is null THEN  uuse.uphone  END as phone,
+		CASE WHEN  uuse.uname is null THEN uo.uname  WHEN  uo.uname is null THEN  uuse.uname  END as uname,
+		b.fullname  as bname,
+		DATE_FORMAT(c.updatetime,'%Y-%m-%d %H:%i:%s')  useTime,
+		DATE_FORMAT((select createtime  from card_active_record  where c.card_no&gt;=card_no_start and  c.card_no&lt;= card_no_end order by createtime desc limit 1 ),'%Y-%m-%d %H:%i:%s')  activeTime,
+		DATE_FORMAT((select createtime  from card_whole_sale  where c.card_no&gt;=card_no_start and  c.card_no&lt;= card_no_end order by createtime desc limit 1 ),'%Y-%m-%d %H:%i:%s')  wholeTime
+		from card c
+		left join
+		(select u.id as uid ,u.name as uname,u.phone as uphone ,b.fullname as bname,usere.card_no  as orderno
+		from  card_used_record usere
+		inner join user u on usere.user_id = u.id
+		inner join branchsaler b on u.branchsaler= b.id
+		 )  as uuse on uuse.orderno = c.card_no and c.type=1
+		left join
+		( select u.id as uid ,u.name as uname,u.phone as uphone ,b.fullname as bname ,o.orderno as orderno
+		from user_order o
+		inner join user u on o.userid = u.id
+		inner join branchsaler b on u.branchsaler= b.id
+		where o.paysource=3 and o.state=1
+		) as uo on uo.orderno = c.card_code and c.type=0
+		left join  branchsaler b on b.id=c.branchsaler_id
+		where 1=1
+		<if test="branchsaler != null">
+			and (c.branchsaler_id = #{branchsaler} )
+		</if>
+		<if test="status != null">
+			and c.status = #{status}
+		</if>
+		<if test="cardNoStart != null and cardNoStart != '' ">
+			and c.card_no &gt;= #{cardNoStart}
+		</if>
+		<if test="cardNoEnd != null and cardNoEnd != '' ">
+			and c.card_no &lt;= #{cardNoEnd}
+		</if>
+		 <if test="sort != null">
+			order by ${sort} ${order}
+		</if>
+	</select>
+	<select id="selectCardUseRecordList" resultType="map">
+		select c.card_no as card_no ,u.id as uid,u.name as uName,u.phone as uPhone,b2.fullname as	bname,  
+		DATE_FORMAT(record.create_time,'%Y-%m-%d %H:%i:%s')  useTime,
+		CASE WHEN  c.type=0 THEN '付费卡'  WHEN  c.type=1 THEN '半月卡' END  as type,c.fee as fee
+		from card_used_record record
+		inner join user u on record.user_id = u.id
+		inner join card c on record.card_no = c.card_no
+		inner join branchsaler b on c.branchsaler_id = b.id
+		inner join branchsaler b2 on u.branchsaler = b2.id  
+		<if test="branchsaler != null">
+			and c.branchsaler_id = #{branchsaler} 
+		</if>
+		<if test="cardNoStart != null and cardNoStart != '' ">
+			and c.card_no &gt;= #{cardNoStart}
+		</if>
+		<if test="cardNoEnd != null and cardNoEnd != '' ">
+			and c.card_no &lt;= #{cardNoEnd}
+		</if>
+		<if test="phone != null and phone != '' ">
+			and u.phone = #{phone} 
+		</if>
+		order by record.create_time desc 
+	</select>
+
+	<select id="countBranchSalerOfCard" resultType="map">
+		select * from card c
+		where 1=1
+		<if test="cardNoStart != null and cardNoStart != '' ">
+			and c.card_no &gt;= #{cardNoStart}
+		</if>
+		<if test="cardNoEnd != null and cardNoEnd != '' ">
+			and c.card_no &lt;= #{cardNoEnd}
+		</if>
+		group by c.branchsaler_id
+	</select>
+	<select id="selectByCardNo" resultType="com.halfroom.distribution.persistence.model.Card">
+		select * from card where card_no=#{cardNo} limit 1
+	</select>
+</mapper>

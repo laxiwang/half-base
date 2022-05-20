@@ -33,7 +33,7 @@
 		<kaptcha.version>2.3.2</kaptcha.version>
 		<ehcache.version>3.3.1</ehcache.version>
 		<velocity.version>1.7</velocity.version>
-		<gson.version>2.2.4</gson.version>
+		<gson.version>2.8.9</gson.version>
 		<spring-context-support.version>3.2.3.RELEASE</spring-context-support.version>
 
 		<org.springframework.session.version>1.3.3.RELEASE</org.springframework.session.version>
